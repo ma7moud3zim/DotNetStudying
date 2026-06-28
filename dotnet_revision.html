@@ -1,0 +1,2330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>.NET Interview Revision Sheet</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f1117;
+        --surface: #161b27;
+        --surface2: #1d2435;
+        --surface3: #232d42;
+        --border: rgba(255, 255, 255, 0.07);
+        --border-accent: rgba(99, 179, 237, 0.3);
+        --text: #e2e8f4;
+        --muted: #7a8ba8;
+        --accent: #63b3ed;
+        --accent2: #76e4c4;
+        --accent3: #f6ad55;
+        --accent4: #fc8181;
+        --accent5: #b794f4;
+        --green: #68d391;
+        --tag-bg: rgba(99, 179, 237, 0.1);
+        --radius: 10px;
+        --code-bg: #0d1117;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+
+      /* ── Top banner ── */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          #0f1117 0%,
+          #1a2035 50%,
+          #0f1117 100%
+        );
+        border-bottom: 1px solid var(--border);
+        padding: 56px 40px 48px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 70% 60% at 50% 0%,
+          rgba(99, 179, 237, 0.08) 0%,
+          transparent 70%
+        );
+      }
+      .hero-eyebrow {
+        font-size: 11px;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 16px;
+        position: relative;
+      }
+      .hero h1 {
+        font-size: 36px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        color: #fff;
+        position: relative;
+      }
+      .hero h1 span {
+        color: var(--accent);
+      }
+      .hero-sub {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        position: relative;
+      }
+      .hero-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 24px;
+        position: relative;
+      }
+      .hero-tag {
+        background: var(--tag-bg);
+        border: 1px solid var(--border-accent);
+        color: var(--accent);
+        border-radius: 20px;
+        padding: 4px 14px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+
+      /* ── Layout ── */
+      .layout {
+        display: flex;
+        max-width: 1280px;
+        margin: 0 auto;
+        gap: 0;
+      }
+
+      /* ── Sidebar nav ── */
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 28px 16px;
+        border-right: 1px solid var(--border);
+      }
+      .sidebar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--surface3);
+        border-radius: 4px;
+      }
+      .nav-label {
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 20px 0 8px 8px;
+      }
+      .nav-label:first-child {
+        margin-top: 0;
+      }
+      .nav-item {
+        display: block;
+        padding: 6px 10px;
+        border-radius: 6px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 12.5px;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        margin-bottom: 2px;
+      }
+      .nav-item:hover {
+        background: var(--surface2);
+        color: var(--text);
+      }
+      .nav-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        margin-right: 8px;
+        vertical-align: middle;
+        margin-top: -1px;
+      }
+
+      /* ── Main content ── */
+      main {
+        flex: 1;
+        min-width: 0;
+        padding: 40px 40px 80px;
+      }
+
+      /* ── Section ── */
+      .section {
+        margin-bottom: 64px;
+        scroll-margin-top: 24px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        flex-shrink: 0;
+      }
+      .section-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.3px;
+      }
+      .section-badge {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-left: auto;
+      }
+
+      /* ── Cards ── */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        transition: border-color 0.2s;
+      }
+      .card:hover {
+        border-color: rgba(255, 255, 255, 0.13);
+      }
+      .card-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card-title .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .card-body {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .card-body strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* ── Code block ── */
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px 20px;
+        overflow-x: auto;
+        margin: 12px 0 0;
+        font-family: "Fira Code", monospace;
+        font-size: 12.5px;
+        line-height: 1.7;
+      }
+      code {
+        font-family: "Fira Code", monospace;
+      }
+      .kw {
+        color: #c792ea;
+      }
+      .ty {
+        color: #82aaff;
+      }
+      .str {
+        color: #c3e88d;
+      }
+      .cm {
+        color: #546e7a;
+      }
+      .fn {
+        color: #82aaff;
+      }
+      .num {
+        color: var(--accent3);
+      }
+      .prop {
+        color: var(--accent2);
+      }
+      .ret {
+        color: var(--accent4);
+      }
+      .hl {
+        color: var(--text);
+      }
+
+      /* ── Topic blocks (concept + code side by side) ── */
+      .topic {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+      .topic-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        user-select: none;
+      }
+      .topic-header:hover {
+        background: var(--surface2);
+      }
+      .topic-tag {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-left: auto;
+      }
+      .topic-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+      }
+      .topic-body {
+        padding: 20px;
+      }
+      .topic-desc {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 14px;
+        line-height: 1.7;
+      }
+      .topic-desc strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* ── Important note ── */
+      .note {
+        background: rgba(246, 173, 85, 0.07);
+        border: 1px solid rgba(246, 173, 85, 0.25);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: var(--accent3);
+        font-size: 12.5px;
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      .note-icon {
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* ── Tip ── */
+      .tip {
+        background: rgba(104, 211, 145, 0.07);
+        border: 1px solid rgba(104, 211, 145, 0.2);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: var(--green);
+        font-size: 12.5px;
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      /* ── Table ── */
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-size: 13px;
+      }
+      .tbl th {
+        text-align: left;
+        padding: 10px 14px;
+        background: var(--surface3);
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border);
+      }
+      .tbl td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+      }
+      .tbl tr:last-child td {
+        border-bottom: none;
+      }
+      .tbl tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .tbl code {
+        background: var(--surface3);
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+
+      /* ── Pipeline diagram ── */
+      .pipeline {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 16px 0;
+      }
+      .pipe-step {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .pipe-box {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 18px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+        min-width: 160px;
+        text-align: center;
+      }
+      .pipe-arrow {
+        color: var(--muted);
+        font-size: 18px;
+        margin: 4px 0 4px 80px;
+      }
+      .pipe-desc {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      /* ── DI lifetime comparison ── */
+      .di-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .di-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+        text-align: center;
+      }
+      .di-name {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .di-desc {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* ── Checklist ── */
+      .checklist {
+        list-style: none;
+        margin-top: 12px;
+      }
+      .checklist li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 6px 0;
+        font-size: 13px;
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+      }
+      .checklist li:last-child {
+        border-bottom: none;
+      }
+      .checklist li::before {
+        content: "✓";
+        color: var(--green);
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .checklist li strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* ── HTTP status grid ── */
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .status-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+      }
+      .status-code {
+        font-family: "Fira Code", monospace;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .status-name {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      /* colors */
+      .c-blue {
+        color: var(--accent);
+      }
+      .c-green {
+        color: var(--green);
+      }
+      .c-yellow {
+        color: var(--accent3);
+      }
+      .c-red {
+        color: var(--accent4);
+      }
+      .c-purple {
+        color: var(--accent5);
+      }
+      .c-teal {
+        color: var(--accent2);
+      }
+
+      .bg-blue {
+        background: rgba(99, 179, 237, 0.1);
+        border-color: rgba(99, 179, 237, 0.25);
+      }
+      .bg-green {
+        background: rgba(104, 211, 145, 0.08);
+        border-color: rgba(104, 211, 145, 0.2);
+      }
+      .bg-yellow {
+        background: rgba(246, 173, 85, 0.07);
+        border-color: rgba(246, 173, 85, 0.2);
+      }
+      .bg-red {
+        background: rgba(252, 129, 129, 0.08);
+        border-color: rgba(252, 129, 129, 0.2);
+      }
+      .bg-purple {
+        background: rgba(183, 148, 244, 0.08);
+        border-color: rgba(183, 148, 244, 0.2);
+      }
+      .bg-teal {
+        background: rgba(118, 228, 196, 0.08);
+        border-color: rgba(118, 228, 196, 0.2);
+      }
+
+      .badge-blue {
+        background: rgba(99, 179, 237, 0.1);
+        color: var(--accent);
+        border: 1px solid rgba(99, 179, 237, 0.25);
+      }
+      .badge-green {
+        background: rgba(104, 211, 145, 0.1);
+        color: var(--green);
+        border: 1px solid rgba(104, 211, 145, 0.25);
+      }
+      .badge-yellow {
+        background: rgba(246, 173, 85, 0.1);
+        color: var(--accent3);
+        border: 1px solid rgba(246, 173, 85, 0.25);
+      }
+      .badge-red {
+        background: rgba(252, 129, 129, 0.1);
+        color: var(--accent4);
+        border: 1px solid rgba(252, 129, 129, 0.25);
+      }
+      .badge-purple {
+        background: rgba(183, 148, 244, 0.1);
+        color: var(--accent5);
+        border: 1px solid rgba(183, 148, 244, 0.25);
+      }
+      .badge-teal {
+        background: rgba(118, 228, 196, 0.1);
+        color: var(--accent2);
+        border: 1px solid rgba(118, 228, 196, 0.25);
+      }
+
+      @media (max-width: 860px) {
+        .sidebar {
+          display: none;
+        }
+        main {
+          padding: 24px 20px 60px;
+        }
+        .hero {
+          padding: 40px 20px 36px;
+        }
+        .hero h1 {
+          font-size: 26px;
+        }
+        .di-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-eyebrow">complete revision guide</div>
+      <h1>.NET Interview <span>Prep Sheet</span></h1>
+      <p class="hero-sub">
+        Explanations + code examples for every topic. Read once, remember it
+        all.
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">C# Fundamentals</span>
+        <span class="hero-tag">OOP</span>
+        <span class="hero-tag">LINQ</span>
+        <span class="hero-tag">ASP.NET Core</span>
+        <span class="hero-tag">Entity Framework</span>
+        <span class="hero-tag">Dependency Injection</span>
+        <span class="hero-tag">JWT Auth</span>
+        <span class="hero-tag">SOLID</span>
+        <span class="hero-tag">Design Patterns</span>
+        <span class="hero-tag">SQL</span>
+        <span class="hero-tag">async/await</span>
+      </div>
+    </div>
+
+    <div class="layout">
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <div class="nav-label">Part 1 – C#</div>
+        <a class="nav-item" href="#oop"
+          ><span class="nav-dot" style="background: var(--accent)"></span>OOP</a
+        >
+        <a class="nav-item" href="#csharp-basics"
+          ><span class="nav-dot" style="background: var(--accent)"></span>C#
+          Basics</a
+        >
+        <a class="nav-item" href="#collections"
+          ><span class="nav-dot" style="background: var(--accent)"></span
+          >Collections</a
+        >
+        <a class="nav-item" href="#exceptions"
+          ><span class="nav-dot" style="background: var(--accent)"></span
+          >Exceptions</a
+        >
+        <a class="nav-item" href="#delegates"
+          ><span class="nav-dot" style="background: var(--accent)"></span
+          >Delegates &amp; Events</a
+        >
+        <a class="nav-item" href="#linq"
+          ><span class="nav-dot" style="background: var(--accent)"></span
+          >LINQ</a
+        >
+        <a class="nav-item" href="#async"
+          ><span class="nav-dot" style="background: var(--accent)"></span>async
+          / await</a
+        >
+
+        <div class="nav-label">Part 2 – ASP.NET</div>
+        <a class="nav-item" href="#pipeline"
+          ><span class="nav-dot" style="background: var(--accent2)"></span
+          >Request Pipeline</a
+        >
+        <a class="nav-item" href="#di"
+          ><span class="nav-dot" style="background: var(--accent2)"></span
+          >Dependency Injection</a
+        >
+        <a class="nav-item" href="#restapi"
+          ><span class="nav-dot" style="background: var(--accent2)"></span>REST
+          APIs</a
+        >
+        <a class="nav-item" href="#efcore"
+          ><span class="nav-dot" style="background: var(--accent2)"></span>EF
+          Core</a
+        >
+        <a class="nav-item" href="#auth"
+          ><span class="nav-dot" style="background: var(--accent2)"></span>JWT
+          Auth</a
+        >
+        <a class="nav-item" href="#middleware"
+          ><span class="nav-dot" style="background: var(--accent2)"></span
+          >Middleware</a
+        >
+
+        <div class="nav-label">Part 3 – Interview</div>
+        <a class="nav-item" href="#solid"
+          ><span class="nav-dot" style="background: var(--accent3)"></span
+          >SOLID</a
+        >
+        <a class="nav-item" href="#patterns"
+          ><span class="nav-dot" style="background: var(--accent3)"></span
+          >Design Patterns</a
+        >
+        <a class="nav-item" href="#sql"
+          ><span class="nav-dot" style="background: var(--accent3)"></span
+          >SQL</a
+        >
+        <a class="nav-item" href="#http"
+          ><span class="nav-dot" style="background: var(--accent3)"></span>HTTP
+          &amp; Status Codes</a
+        >
+        <a class="nav-item" href="#git"
+          ><span class="nav-dot" style="background: var(--accent3)"></span
+          >Git</a
+        >
+        <a class="nav-item" href="#extras"
+          ><span class="nav-dot" style="background: var(--accent4)"></span>Added
+          Extras ★</a
+        >
+      </nav>
+
+      <!-- Main -->
+      <main>
+        <!-- ═══════════════════════ OOP ═══════════════════════ -->
+        <section class="section" id="oop">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(99, 179, 237, 0.12)"
+            >
+              🧱
+            </div>
+            <div class="section-title">Object-Oriented Programming</div>
+            <span class="section-badge badge-blue">Part 1</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Encapsulation</div>
+              <span class="topic-tag badge-blue">Core concept</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Hiding internal state and only exposing what's needed via
+                <strong>properties</strong> and <strong>methods</strong>.
+                Protects data integrity — no one can set an invalid age
+                directly.
+              </p>
+              <pre><span class="kw">public class</span> <span class="ty">BankAccount</span>
+{
+    <span class="kw">private decimal</span> _balance; <span class="cm">// hidden</span>
+
+    <span class="kw">public decimal</span> <span class="prop">Balance</span> =&gt; _balance; <span class="cm">// read-only</span>
+
+    <span class="kw">public void</span> <span class="fn">Deposit</span>(<span class="kw">decimal</span> amount)
+    {
+        <span class="kw">if</span> (amount &lt;= <span class="num">0</span>) <span class="kw">throw new</span> <span class="ty">ArgumentException</span>(<span class="str">"Must be positive"</span>);
+        _balance += amount;
+    }
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Inheritance</div>
+              <span class="topic-tag badge-blue">Core concept</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                A class <strong>inherits</strong> members from a base class
+                using <code>:</code>. Use <code>base()</code> to call the parent
+                constructor. C# only allows
+                <strong>single inheritance</strong> (one base class), but
+                multiple interfaces.
+              </p>
+              <pre><span class="kw">public class</span> <span class="ty">Animal</span>
+{
+    <span class="kw">public string</span> <span class="prop">Name</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public virtual void</span> <span class="fn">Speak</span>() =&gt; <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"..."</span>);
+}
+
+<span class="kw">public class</span> <span class="ty">Dog</span> : <span class="ty">Animal</span>
+{
+    <span class="kw">public override void</span> <span class="fn">Speak</span>() =&gt; <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Woof!"</span>);
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Polymorphism</div>
+              <span class="topic-tag badge-blue">Core concept</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <strong>Runtime polymorphism</strong>: a base-class reference
+                holds a subclass object — the correct overridden method is
+                called at runtime. Key word: <code>virtual</code> /
+                <code>override</code>.
+              </p>
+              <pre><span class="ty">Animal</span>[] animals = { <span class="kw">new</span> <span class="ty">Dog</span>(), <span class="kw">new</span> <span class="ty">Cat</span>() };
+<span class="kw">foreach</span> (<span class="kw">var</span> a <span class="kw">in</span> animals)
+    a.<span class="fn">Speak</span>(); <span class="cm">// calls Dog.Speak or Cat.Speak — decided at runtime</span></pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Interfaces vs Abstract Classes</div>
+              <span class="topic-tag badge-yellow">⚡ Frequently asked</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Key mental model: <strong>Abstract class = is a</strong>.
+                <strong>Interface = can do</strong>. A Dog is an Animal; a Dog
+                can ISwim.
+              </p>
+              <table class="tbl">
+                <tr>
+                  <th>Feature</th>
+                  <th>Abstract Class</th>
+                  <th>Interface</th>
+                </tr>
+                <tr>
+                  <td>Multiple inheritance</td>
+                  <td>❌ No</td>
+                  <td>✅ Yes (many interfaces)</td>
+                </tr>
+                <tr>
+                  <td>Can have fields</td>
+                  <td>✅ Yes</td>
+                  <td>❌ No (only props/methods)</td>
+                </tr>
+                <tr>
+                  <td>Constructor</td>
+                  <td>✅ Yes</td>
+                  <td>❌ No</td>
+                </tr>
+                <tr>
+                  <td>Default implementation</td>
+                  <td>✅ Yes</td>
+                  <td>✅ C# 8+ default methods</td>
+                </tr>
+                <tr>
+                  <td>When to use</td>
+                  <td>Shared base logic</td>
+                  <td>Define a contract/capability</td>
+                </tr>
+              </table>
+              <pre><span class="kw">public interface</span> <span class="ty">IRepository</span>&lt;<span class="ty">T</span>&gt;
+{
+    <span class="ty">Task</span>&lt;<span class="ty">T</span>&gt; <span class="fn">GetByIdAsync</span>(<span class="kw">int</span> id);
+    <span class="ty">Task</span>&lt;<span class="ty">IEnumerable</span>&lt;<span class="ty">T</span>&gt;&gt; <span class="fn">GetAllAsync</span>();
+}
+
+<span class="kw">public abstract class</span> <span class="ty">BaseEntity</span>
+{
+    <span class="kw">public int</span> <span class="prop">Id</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public</span> <span class="ty">DateTime</span> <span class="prop">CreatedAt</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public abstract string</span> <span class="fn">GetDescription</span>(); <span class="cm">// subclass must implement</span>
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ C# BASICS ═══════════════════════ -->
+        <section class="section" id="csharp-basics">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(99, 179, 237, 0.12)"
+            >
+              ⚙️
+            </div>
+            <div class="section-title">C# Basics</div>
+            <span class="section-badge badge-blue">Part 1</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Value types vs Reference types</div>
+              <span class="topic-tag badge-yellow">⚡ Frequently asked</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <strong>Value types</strong> (int, bool, struct, enum) live on
+                the <em>stack</em> and are <em>copied</em> on assignment.
+                <strong>Reference types</strong> (class, string, array) live on
+                the <em>heap</em> — the variable holds a pointer.
+              </p>
+              <pre><span class="cm">// Value type – copy</span>
+<span class="kw">int</span> a = <span class="num">5</span>;
+<span class="kw">int</span> b = a;  <span class="cm">// b is an independent copy</span>
+b = <span class="num">99</span>;     <span class="cm">// a is still 5</span>
+
+<span class="cm">// Reference type – same object</span>
+<span class="kw">var</span> list1 = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="kw">int</span>&gt; { <span class="num">1</span>, <span class="num">2</span> };
+<span class="kw">var</span> list2 = list1;   <span class="cm">// points to same list!</span>
+list2.<span class="fn">Add</span>(<span class="num">3</span>);          <span class="cm">// list1 also has 3 now</span></pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">ref, out, in</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <code>ref</code>: pass a value type by reference (two-way).
+                <code>out</code>: the method <em>must</em> assign it before
+                returning. <code>in</code>: read-only reference (performance, no
+                copy).
+              </p>
+              <pre><span class="kw">void</span> <span class="fn">Double</span>(<span class="kw">ref int</span> x) =&gt; x *= <span class="num">2</span>;
+<span class="kw">bool</span> <span class="fn">TryParse</span>(<span class="kw">string</span> s, <span class="kw">out int</span> result)  <span class="cm">// common pattern</span>
+{
+    result = <span class="kw">int</span>.<span class="fn">TryParse</span>(s, <span class="kw">out int</span> v) ? v : <span class="num">0</span>;
+    <span class="kw">return</span> result &gt; <span class="num">0</span>;
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">const vs readonly</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <code>const</code>: compile-time constant, must be a literal,
+                implicitly static. <code>readonly</code>: set at runtime in the
+                constructor, can be an object.
+              </p>
+              <pre><span class="kw">public class</span> <span class="ty">Config</span>
+{
+    <span class="kw">public const string</span>   <span class="prop">AppName</span>    = <span class="str">"MyApp"</span>;      <span class="cm">// compile-time</span>
+    <span class="kw">public readonly</span> <span class="ty">Guid</span>  <span class="prop">InstanceId</span> = <span class="ty">Guid</span>.<span class="fn">NewGuid</span>(); <span class="cm">// runtime, set once</span>
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">String vs StringBuilder</div>
+              <span class="topic-tag badge-yellow">⚡ Frequently asked</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <strong>string</strong> is <em>immutable</em> — every
+                concatenation creates a new object. For loops with many
+                concatenations, use <strong>StringBuilder</strong> (mutable
+                buffer, far more efficient).
+              </p>
+              <pre><span class="cm">// Bad – creates many string objects in memory</span>
+<span class="kw">string</span> s = <span class="str">""</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">10000</span>; i++) s += i;
+
+<span class="cm">// Good – single buffer</span>
+<span class="kw">var</span> sb = <span class="kw">new</span> <span class="ty">StringBuilder</span>();
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">10000</span>; i++) sb.<span class="fn">Append</span>(i);
+<span class="kw">string</span> result = sb.<span class="fn">ToString</span>();</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Nullable types</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Value types can't be null by default. Append <code>?</code> to
+                make them nullable. Use <code>??</code> (null coalescing) and
+                <code>?.</code> (null-conditional) to handle nulls safely.
+              </p>
+              <pre><span class="kw">int</span>? age = <span class="kw">null</span>;
+<span class="kw">int</span> display = age ?? <span class="num">0</span>;          <span class="cm">// 0 if null</span>
+
+<span class="ty">User</span>? user = <span class="fn">GetUser</span>();
+<span class="kw">string</span>? name = user?.<span class="prop">Name</span>;      <span class="cm">// null if user is null</span>
+<span class="kw">string</span> safe = name ?? <span class="str">"Unknown"</span>;</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ COLLECTIONS ═══════════════════════ -->
+        <section class="section" id="collections">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(99, 179, 237, 0.12)"
+            >
+              📦
+            </div>
+            <div class="section-title">Collections</div>
+            <span class="section-badge badge-blue">Part 1</span>
+          </div>
+          <table class="tbl">
+            <tr>
+              <th>Type</th>
+              <th>When to use</th>
+              <th>Key note</th>
+            </tr>
+            <tr>
+              <td><code>T[]</code></td>
+              <td>Fixed-size, fastest access</td>
+              <td>Size cannot change after creation</td>
+            </tr>
+            <tr>
+              <td><code>List&lt;T&gt;</code></td>
+              <td>Most common, ordered, resizable</td>
+              <td>O(1) add, O(n) insert/remove middle</td>
+            </tr>
+            <tr>
+              <td><code>Dictionary&lt;K,V&gt;</code></td>
+              <td>Key-value lookup</td>
+              <td>O(1) average lookup by key</td>
+            </tr>
+            <tr>
+              <td><code>HashSet&lt;T&gt;</code></td>
+              <td>Unique items, fast contains check</td>
+              <td>No duplicates, O(1) Contains</td>
+            </tr>
+            <tr>
+              <td><code>Queue&lt;T&gt;</code></td>
+              <td>First-In First-Out (FIFO)</td>
+              <td>Enqueue / Dequeue</td>
+            </tr>
+            <tr>
+              <td><code>Stack&lt;T&gt;</code></td>
+              <td>Last-In First-Out (LIFO)</td>
+              <td>Push / Pop</td>
+            </tr>
+          </table>
+          <pre
+            style="margin-top: 16px"
+          ><span class="cm">// Dictionary – fastest lookup by key</span>
+<span class="kw">var</span> cache = <span class="kw">new</span> <span class="ty">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt;();
+cache[<span class="num">1</span>] = <span class="str">"Alice"</span>;
+<span class="kw">if</span> (cache.<span class="fn">TryGetValue</span>(<span class="num">1</span>, <span class="kw">out var</span> name)) <span class="cm">// safe get</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(name);
+
+<span class="cm">// HashSet – remove duplicates</span>
+<span class="kw">var</span> ids = <span class="kw">new</span> <span class="ty">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span> }; <span class="cm">// {1,2,3}</span></pre>
+        </section>
+
+        <!-- ═══════════════════════ EXCEPTIONS ═══════════════════════ -->
+        <section class="section" id="exceptions">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(99, 179, 237, 0.12)"
+            >
+              ⚠️
+            </div>
+            <div class="section-title">Exception Handling</div>
+            <span class="section-badge badge-blue">Part 1</span>
+          </div>
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">
+                try / catch / finally + custom exceptions
+              </div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <code>finally</code> always runs (cleanup). Catch the
+                <em>most specific</em> exception first. Create custom exceptions
+                by extending <code>Exception</code>.
+              </p>
+              <pre><span class="kw">public class</span> <span class="ty">OrderNotFoundException</span> : <span class="ty">Exception</span>
+{
+    <span class="kw">public</span> <span class="fn">OrderNotFoundException</span>(<span class="kw">int</span> id)
+        : <span class="kw">base</span>(<span class="str">$"Order {id} not found"</span>) { }
+}
+
+<span class="kw">try</span>
+{
+    <span class="kw">var</span> order = <span class="kw">await</span> _repo.<span class="fn">GetOrderAsync</span>(id);
+    <span class="kw">if</span> (order == <span class="kw">null</span>) <span class="kw">throw new</span> <span class="ty">OrderNotFoundException</span>(id);
+}
+<span class="kw">catch</span> (<span class="ty">OrderNotFoundException</span> ex)
+{
+    _logger.<span class="fn">LogWarning</span>(ex.Message);
+    <span class="kw">return</span> <span class="ty">NotFound</span>(ex.Message);
+}
+<span class="kw">catch</span> (<span class="ty">Exception</span> ex)      <span class="cm">// catch-all last</span>
+{
+    _logger.<span class="fn">LogError</span>(ex, <span class="str">"Unexpected error"</span>);
+    <span class="kw">return</span> <span class="ty">StatusCode</span>(<span class="num">500</span>);
+}
+<span class="kw">finally</span>
+{
+    <span class="cm">// Runs always — close connections, dispose resources</span>
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ DELEGATES ═══════════════════════ -->
+        <section class="section" id="delegates">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(99, 179, 237, 0.12)"
+            >
+              🔗
+            </div>
+            <div class="section-title">
+              Delegates, Func, Action &amp; Events
+            </div>
+            <span class="section-badge badge-blue">Part 1</span>
+          </div>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px">
+            A <strong style="color: var(--text)">delegate</strong> is a
+            type-safe function pointer. <code>Action</code> is a void delegate.
+            <code>Func</code> returns a value. <code>Predicate</code> returns
+            bool. Events are delegates with restricted access.
+          </p>
+          <pre><span class="cm">// Func&lt;input, output&gt;</span>
+<span class="ty">Func</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>, <span class="kw">int</span>&gt; add = (a, b) =&gt; a + b;
+<span class="kw">int</span> sum = <span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>); <span class="cm">// 7</span>
+
+<span class="cm">// Action – no return value</span>
+<span class="ty">Action</span>&lt;<span class="kw">string</span>&gt; log = msg =&gt; <span class="ty">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"[LOG] {msg}"</span>);
+
+<span class="cm">// Predicate – returns bool</span>
+<span class="ty">Predicate</span>&lt;<span class="kw">int</span>&gt; isEven = n =&gt; n % <span class="num">2</span> == <span class="num">0</span>;
+
+<span class="cm">// Events (publish-subscribe pattern)</span>
+<span class="kw">public class</span> <span class="ty">Button</span>
+{
+    <span class="kw">public event</span> <span class="ty">EventHandler</span> <span class="prop">Clicked</span>;
+    <span class="kw">public void</span> <span class="fn">Click</span>() =&gt; <span class="prop">Clicked</span>?.Invoke(<span class="kw">this</span>, <span class="ty">EventArgs</span>.<span class="prop">Empty</span>);
+}
+<span class="cm">// Subscribe:</span>
+btn.<span class="prop">Clicked</span> += (s, e) =&gt; <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Clicked!"</span>);</pre>
+        </section>
+
+        <!-- ═══════════════════════ LINQ ═══════════════════════ -->
+        <section class="section" id="linq">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(99, 179, 237, 0.12)"
+            >
+              🔍
+            </div>
+            <div class="section-title">LINQ</div>
+            <span class="section-badge badge-yellow">⚡ High priority</span>
+          </div>
+          <div class="note">
+            <span class="note-icon">💡</span>LINQ is deferred — it doesn't
+            execute until you call <code>ToList()</code>,
+            <code>ToArray()</code>, or iterate it. Calling it twice runs the
+            query twice.
+          </div>
+          <pre
+            style="margin-top: 16px"
+          ><span class="kw">var</span> products = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">Product</span>&gt;(); <span class="cm">// assume populated</span>
+
+<span class="cm">// Filter + Project</span>
+<span class="kw">var</span> names = products
+    .<span class="fn">Where</span>(p =&gt; p.Price &gt; <span class="num">100</span>)
+    .<span class="fn">OrderByDescending</span>(p =&gt; p.Price)
+    .<span class="fn">Select</span>(p =&gt; p.Name)
+    .<span class="fn">ToList</span>();
+
+<span class="cm">// GroupBy</span>
+<span class="kw">var</span> byCategory = products
+    .<span class="fn">GroupBy</span>(p =&gt; p.Category)
+    .<span class="fn">Select</span>(g =&gt; <span class="kw">new</span> { Category = g.Key, Count = g.<span class="fn">Count</span>() });
+
+<span class="cm">// FirstOrDefault – returns null if nothing matches</span>
+<span class="ty">Product</span>? found = products.<span class="fn">FirstOrDefault</span>(p =&gt; p.Id == <span class="num">5</span>);
+
+<span class="cm">// Any / All</span>
+<span class="kw">bool</span> hasExpensive = products.<span class="fn">Any</span>(p =&gt; p.Price &gt; <span class="num">500</span>);
+<span class="kw">bool</span> allInStock  = products.<span class="fn">All</span>(p =&gt; p.Stock &gt; <span class="num">0</span>);
+
+<span class="cm">// Join (in-memory)</span>
+<span class="kw">var</span> result = products.<span class="fn">Join</span>(
+    categories,
+    p =&gt; p.CategoryId,
+    c =&gt; c.Id,
+    (p, c) =&gt; <span class="kw">new</span> { p.Name, c.CategoryName }
+);</pre>
+        </section>
+
+        <!-- ═══════════════════════ ASYNC ═══════════════════════ -->
+        <section class="section" id="async">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(99, 179, 237, 0.12)"
+            >
+              ⚡
+            </div>
+            <div class="section-title">async / await</div>
+            <span class="section-badge badge-yellow">⚡ High priority</span>
+          </div>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px">
+            <strong style="color: var(--text)">async/await</strong> is
+            non-blocking I/O. The thread is freed while waiting for
+            DB/network/file — critical for scalable web APIs. Always return
+            <code>Task</code> (void is only for event handlers).
+          </p>
+          <pre><span class="cm">// ✅ Correct pattern</span>
+<span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">User</span>?&gt; <span class="fn">GetUserAsync</span>(<span class="kw">int</span> id)
+{
+    <span class="kw">return await</span> _db.<span class="prop">Users</span>.<span class="fn">FindAsync</span>(id);
+}
+
+<span class="cm">// Run multiple tasks in parallel</span>
+<span class="kw">var</span> (user, orders) = <span class="kw">await</span> (<span class="fn">GetUserAsync</span>(id), <span class="fn">GetOrdersAsync</span>(id)).WhenAll();
+<span class="cm">// or:</span>
+<span class="kw">await</span> <span class="ty">Task</span>.<span class="fn">WhenAll</span>(task1, task2, task3);
+
+<span class="cm">// ❌ AVOID – blocks the thread</span>
+<span class="kw">var</span> result = <span class="fn">GetUserAsync</span>(id).<span class="prop">Result</span>; <span class="cm">// can deadlock!</span></pre>
+          <div class="note">
+            <span class="note-icon">⚠️</span
+            ><strong>ConfigureAwait(false)</strong>: In library code (not
+            ASP.NET controllers), add <code>.ConfigureAwait(false)</code> after
+            every await to avoid deadlocks in sync contexts.
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ PIPELINE ═══════════════════════ -->
+        <section class="section" id="pipeline">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(118, 228, 196, 0.12)"
+            >
+              🌐
+            </div>
+            <div class="section-title">ASP.NET Core Request Pipeline</div>
+            <span class="section-badge badge-teal">Part 2</span>
+          </div>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 20px">
+            Every HTTP request flows <em>through</em> registered middleware in
+            order, then back out. Each middleware can short-circuit the
+            pipeline.
+          </p>
+          <div class="pipeline">
+            <div class="pipe-step">
+              <div class="pipe-box c-accent">HTTP Request</div>
+              <span class="pipe-desc" style="margin-left: 12px"
+                >Arrives at Kestrel</span
+              >
+            </div>
+            <div class="pipe-arrow">↓</div>
+            <div class="pipe-step">
+              <div class="pipe-box">Exception Handling</div>
+            </div>
+            <div class="pipe-arrow">↓</div>
+            <div class="pipe-step">
+              <div class="pipe-box">Authentication</div>
+            </div>
+            <div class="pipe-arrow">↓</div>
+            <div class="pipe-step">
+              <div class="pipe-box">Authorization</div>
+            </div>
+            <div class="pipe-arrow">↓</div>
+            <div class="pipe-step"><div class="pipe-box">Routing</div></div>
+            <div class="pipe-arrow">↓</div>
+            <div class="pipe-step">
+              <div class="pipe-box">Controller Action</div>
+            </div>
+            <div class="pipe-arrow">↓</div>
+            <div class="pipe-step">
+              <div class="pipe-box c-teal">HTTP Response</div>
+            </div>
+          </div>
+          <pre
+            style="margin-top: 20px"
+          ><span class="cm">// Program.cs – order matters!</span>
+<span class="kw">var</span> app = builder.<span class="fn">Build</span>();
+
+app.<span class="fn">UseExceptionHandler</span>(<span class="str">"/error"</span>);
+app.<span class="fn">UseHttpsRedirection</span>();
+app.<span class="fn">UseAuthentication</span>();  <span class="cm">// must come before Authorization</span>
+app.<span class="fn">UseAuthorization</span>();
+app.<span class="fn">MapControllers</span>();
+app.<span class="fn">Run</span>();</pre>
+        </section>
+
+        <!-- ═══════════════════════ DI ═══════════════════════ -->
+        <section class="section" id="di">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(118, 228, 196, 0.12)"
+            >
+              💉
+            </div>
+            <div class="section-title">Dependency Injection</div>
+            <span class="section-badge badge-yellow">⚡ Most asked</span>
+          </div>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px">
+            Instead of classes creating their own dependencies, the DI container
+            <em>injects</em> them via the constructor. Makes code testable and
+            loosely coupled.
+          </p>
+
+          <div class="di-grid">
+            <div class="di-card" style="border-color: rgba(99, 179, 237, 0.3)">
+              <div class="di-name c-blue">Transient</div>
+              <div class="di-desc">
+                New instance every request. Safe for stateless services.
+              </div>
+            </div>
+            <div class="di-card" style="border-color: rgba(118, 228, 196, 0.3)">
+              <div class="di-name c-teal">Scoped</div>
+              <div class="di-desc">
+                One instance per HTTP request. Use for DbContext, repositories.
+              </div>
+            </div>
+            <div class="di-card" style="border-color: rgba(246, 173, 85, 0.3)">
+              <div class="di-name c-yellow">Singleton</div>
+              <div class="di-desc">
+                One instance for the app lifetime. Caches, configs, loggers.
+              </div>
+            </div>
+          </div>
+
+          <pre
+            style="margin-top: 16px"
+          ><span class="cm">// Register (Program.cs)</span>
+builder.Services.<span class="fn">AddTransient</span>&lt;<span class="ty">IEmailService</span>, <span class="ty">EmailService</span>&gt;();
+builder.Services.<span class="fn">AddScoped</span>&lt;<span class="ty">IOrderRepository</span>, <span class="ty">OrderRepository</span>&gt;();
+builder.Services.<span class="fn">AddSingleton</span>&lt;<span class="ty">ICacheService</span>, <span class="ty">MemoryCacheService</span>&gt;();
+
+<span class="cm">// Inject via constructor (preferred)</span>
+<span class="kw">public class</span> <span class="ty">OrderService</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">IOrderRepository</span> _repo;
+    <span class="kw">public</span> <span class="fn">OrderService</span>(<span class="ty">IOrderRepository</span> repo) =&gt; _repo = repo;
+}</pre>
+          <div class="note">
+            <span class="note-icon">⚠️</span
+            ><strong>Captive dependency</strong>: Never inject a Scoped service
+            into a Singleton — the Scoped service won't be disposed per-request
+            and can cause bugs.
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ REST API ═══════════════════════ -->
+        <section class="section" id="restapi">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(118, 228, 196, 0.12)"
+            >
+              🔌
+            </div>
+            <div class="section-title">REST APIs &amp; Controllers</div>
+            <span class="section-badge badge-teal">Part 2</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Full CRUD controller with DTOs</div>
+              <span class="topic-tag badge-yellow">⚡ Exam favourite</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                DTOs (Data Transfer Objects) decouple your API shape from your
+                database model. Never expose your entity directly — you control
+                exactly what the client sees.
+              </p>
+              <pre><span class="kw">public record</span> <span class="ty">CreateProductDto</span>(<span class="kw">string</span> Name, <span class="kw">decimal</span> Price);
+<span class="kw">public record</span> <span class="ty">ProductDto</span>(<span class="kw">int</span> Id, <span class="kw">string</span> Name, <span class="kw">decimal</span> Price);
+
+[<span class="ty">ApiController</span>]
+[<span class="ty">Route</span>(<span class="str">"api/[controller]"</span>)]
+<span class="kw">public class</span> <span class="ty">ProductsController</span> : <span class="ty">ControllerBase</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">IProductService</span> _svc;
+    <span class="kw">public</span> <span class="fn">ProductsController</span>(<span class="ty">IProductService</span> svc) =&gt; _svc = svc;
+
+    [<span class="ty">HttpGet</span>]
+    <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">IActionResult</span>&gt; <span class="fn">GetAll</span>()
+        =&gt; <span class="fn">Ok</span>(<span class="kw">await</span> _svc.<span class="fn">GetAllAsync</span>());
+
+    [<span class="ty">HttpGet</span>(<span class="str">"{id}"</span>)]
+    <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">IActionResult</span>&gt; <span class="fn">GetById</span>(<span class="kw">int</span> id)
+    {
+        <span class="kw">var</span> product = <span class="kw">await</span> _svc.<span class="fn">GetByIdAsync</span>(id);
+        <span class="kw">return</span> product == <span class="kw">null</span> ? <span class="fn">NotFound</span>() : <span class="fn">Ok</span>(product);
+    }
+
+    [<span class="ty">HttpPost</span>]
+    <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">IActionResult</span>&gt; <span class="fn">Create</span>(<span class="ty">CreateProductDto</span> dto)
+    {
+        <span class="kw">var</span> created = <span class="kw">await</span> _svc.<span class="fn">CreateAsync</span>(dto);
+        <span class="kw">return</span> <span class="fn">CreatedAtAction</span>(<span class="kw">nameof</span>(GetById), <span class="kw">new</span> { id = created.Id }, created);
+    }
+
+    [<span class="ty">HttpPut</span>(<span class="str">"{id}"</span>)]
+    <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">IActionResult</span>&gt; <span class="fn">Update</span>(<span class="kw">int</span> id, <span class="ty">CreateProductDto</span> dto)
+    {
+        <span class="kw">var</span> ok = <span class="kw">await</span> _svc.<span class="fn">UpdateAsync</span>(id, dto);
+        <span class="kw">return</span> ok ? <span class="fn">NoContent</span>() : <span class="fn">NotFound</span>();
+    }
+
+    [<span class="ty">HttpDelete</span>(<span class="str">"{id}"</span>)]
+    <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">IActionResult</span>&gt; <span class="fn">Delete</span>(<span class="kw">int</span> id)
+    {
+        <span class="kw">var</span> ok = <span class="kw">await</span> _svc.<span class="fn">DeleteAsync</span>(id);
+        <span class="kw">return</span> ok ? <span class="fn">NoContent</span>() : <span class="fn">NotFound</span>();
+    }
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Model Validation</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Use Data Annotations on DTOs.
+                <code>[ApiController]</code> automatically returns
+                <code>400 Bad Request</code> if validation fails.
+              </p>
+              <pre><span class="kw">public class</span> <span class="ty">RegisterDto</span>
+{
+    [<span class="ty">Required</span>]
+    [<span class="ty">EmailAddress</span>]
+    <span class="kw">public string</span> <span class="prop">Email</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    [<span class="ty">Required</span>]
+    [<span class="ty">MinLength</span>(<span class="num">8</span>)]
+    <span class="kw">public string</span> <span class="prop">Password</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    [<span class="ty">Range</span>(<span class="num">18</span>, <span class="num">120</span>)]
+    <span class="kw">public int</span> <span class="prop">Age</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ EF CORE ═══════════════════════ -->
+        <section class="section" id="efcore">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(118, 228, 196, 0.12)"
+            >
+              🗄️
+            </div>
+            <div class="section-title">Entity Framework Core</div>
+            <span class="section-badge badge-yellow">⚡ High priority</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">DbContext + Migrations + CRUD</div>
+            </div>
+            <div class="topic-body">
+              <pre><span class="cm">// 1. Entity</span>
+<span class="kw">public class</span> <span class="ty">Product</span>
+{
+    <span class="kw">public int</span>     <span class="prop">Id</span>       { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public string</span>  <span class="prop">Name</span>     { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">""</span>;
+    <span class="kw">public decimal</span> <span class="prop">Price</span>   { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+
+<span class="cm">// 2. DbContext</span>
+<span class="kw">public class</span> <span class="ty">AppDbContext</span> : <span class="ty">DbContext</span>
+{
+    <span class="kw">public</span> <span class="ty">DbSet</span>&lt;<span class="ty">Product</span>&gt; <span class="prop">Products</span> =&gt; <span class="fn">Set</span>&lt;<span class="ty">Product</span>&gt;();
+    <span class="kw">public</span> <span class="fn">AppDbContext</span>(<span class="ty">DbContextOptions</span>&lt;<span class="ty">AppDbContext</span>&gt; opts) : <span class="kw">base</span>(opts) {}
+}
+
+<span class="cm">// 3. Register (Program.cs)</span>
+builder.Services.<span class="fn">AddDbContext</span>&lt;<span class="ty">AppDbContext</span>&gt;(o =&gt;
+    o.<span class="fn">UseSqlServer</span>(builder.Configuration.<span class="fn">GetConnectionString</span>(<span class="str">"Default"</span>)));
+
+<span class="cm">// 4. Migrations (CLI)</span>
+<span class="cm">// dotnet ef migrations add InitialCreate</span>
+<span class="cm">// dotnet ef database update</span>
+
+<span class="cm">// 5. CRUD inside repository</span>
+<span class="kw">await</span> _db.<span class="prop">Products</span>.<span class="fn">ToListAsync</span>();                        <span class="cm">// GET all</span>
+<span class="kw">await</span> _db.<span class="prop">Products</span>.<span class="fn">FindAsync</span>(id);                         <span class="cm">// GET by PK</span>
+_db.<span class="prop">Products</span>.<span class="fn">Add</span>(newProduct);                             <span class="cm">// INSERT</span>
+_db.<span class="prop">Products</span>.<span class="fn">Update</span>(product);                             <span class="cm">// UPDATE</span>
+_db.<span class="prop">Products</span>.<span class="fn">Remove</span>(product);                             <span class="cm">// DELETE</span>
+<span class="kw">await</span> _db.<span class="fn">SaveChangesAsync</span>();                              <span class="cm">// commit</span></pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">
+                Include (Eager Loading) &amp; AsNoTracking
+              </div>
+              <span class="topic-tag badge-yellow">⚡ Interview question</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <strong>Include</strong>: loads related data in the same SQL
+                query. <strong>AsNoTracking</strong>: skips change tracking —
+                faster for read-only queries (no need to detect changes for
+                SaveChanges).
+              </p>
+              <pre><span class="cm">// Load Orders with their OrderItems</span>
+<span class="kw">var</span> orders = <span class="kw">await</span> _db.<span class="prop">Orders</span>
+    .<span class="fn">Include</span>(o =&gt; o.OrderItems)
+        .<span class="fn">ThenInclude</span>(i =&gt; i.Product)
+    .<span class="fn">Where</span>(o =&gt; o.UserId == userId)
+    .<span class="fn">AsNoTracking</span>()           <span class="cm">// read-only = faster</span>
+    .<span class="fn">ToListAsync</span>();</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ JWT AUTH ═══════════════════════ -->
+        <section class="section" id="auth">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(118, 228, 196, 0.12)"
+            >
+              🔐
+            </div>
+            <div class="section-title">JWT Authentication</div>
+            <span class="section-badge badge-yellow">⚡ High priority</span>
+          </div>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px">
+            <strong style="color: var(--text)">Authentication</strong> = who are
+            you? | <strong style="color: var(--text)">Authorization</strong> =
+            what can you do?<br />
+            A JWT has three parts: <code>Header.Payload.Signature</code>. The
+            server signs it — tamper-proof but <em>not encrypted</em> (don't put
+            secrets in the payload).
+          </p>
+          <pre><span class="cm">// Setup (Program.cs)</span>
+builder.Services.<span class="fn">AddAuthentication</span>(<span class="ty">JwtBearerDefaults</span>.<span class="prop">AuthenticationScheme</span>)
+    .<span class="fn">AddJwtBearer</span>(o =&gt;
+    {
+        o.TokenValidationParameters = <span class="kw">new</span>
+        {
+            ValidateIssuer           = <span class="kw">true</span>,
+            ValidIssuer              = config[<span class="str">"Jwt:Issuer"</span>],
+            ValidateAudience         = <span class="kw">true</span>,
+            ValidAudience            = config[<span class="str">"Jwt:Audience"</span>],
+            ValidateLifetime         = <span class="kw">true</span>,
+            ValidateIssuerSigningKey = <span class="kw">true</span>,
+            IssuerSigningKey         = <span class="kw">new</span> <span class="ty">SymmetricSecurityKey</span>(
+                <span class="ty">Encoding</span>.UTF8.<span class="fn">GetBytes</span>(config[<span class="str">"Jwt:Key"</span>]))
+        };
+    });
+
+<span class="cm">// Generate a token</span>
+<span class="kw">var</span> claims = <span class="kw">new</span>[]
+{
+    <span class="kw">new</span> <span class="ty">Claim</span>(<span class="ty">ClaimTypes</span>.<span class="prop">NameIdentifier</span>, user.Id.ToString()),
+    <span class="kw">new</span> <span class="ty">Claim</span>(<span class="ty">ClaimTypes</span>.<span class="prop">Role</span>, <span class="str">"Admin"</span>)
+};
+<span class="kw">var</span> token = <span class="kw">new</span> <span class="ty">JwtSecurityToken</span>(
+    issuer: config[<span class="str">"Jwt:Issuer"</span>],
+    audience: config[<span class="str">"Jwt:Audience"</span>],
+    claims: claims,
+    expires: <span class="ty">DateTime</span>.UtcNow.<span class="fn">AddHours</span>(<span class="num">1</span>),
+    signingCredentials: creds);
+
+<span class="cm">// Protect an endpoint</span>
+[<span class="ty">Authorize</span>]                        <span class="cm">// any authenticated user</span>
+[<span class="ty">Authorize</span>(<span class="ty">Roles</span> = <span class="str">"Admin"</span>)]      <span class="cm">// specific role</span></pre>
+        </section>
+
+        <!-- ═══════════════════════ MIDDLEWARE ═══════════════════════ -->
+        <section class="section" id="middleware">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(118, 228, 196, 0.12)"
+            >
+              🔄
+            </div>
+            <div class="section-title">Custom Middleware</div>
+            <span class="section-badge badge-teal">Part 2</span>
+          </div>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px">
+            Middleware intercepts every request/response. Common uses: global
+            error handling, logging, rate limiting, request timing.
+          </p>
+          <pre><span class="kw">public class</span> <span class="ty">RequestLoggingMiddleware</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">RequestDelegate</span> _next;
+    <span class="kw">private readonly</span> <span class="ty">ILogger</span> _logger;
+
+    <span class="kw">public</span> <span class="fn">RequestLoggingMiddleware</span>(<span class="ty">RequestDelegate</span> next, <span class="ty">ILogger</span>&lt;<span class="ty">RequestLoggingMiddleware</span>&gt; logger)
+    {
+        _next = next; _logger = logger;
+    }
+
+    <span class="kw">public async</span> <span class="ty">Task</span> <span class="fn">InvokeAsync</span>(<span class="ty">HttpContext</span> ctx)
+    {
+        <span class="kw">var</span> sw = <span class="ty">Stopwatch</span>.<span class="fn">StartNew</span>();
+        <span class="kw">await</span> <span class="fn">_next</span>(ctx);             <span class="cm">// call the next middleware</span>
+        sw.<span class="fn">Stop</span>();
+        _logger.<span class="fn">LogInformation</span>(<span class="str">"{Method} {Path} → {Status} in {ms}ms"</span>,
+            ctx.Request.Method, ctx.Request.Path,
+            ctx.Response.StatusCode, sw.ElapsedMilliseconds);
+    }
+}
+
+<span class="cm">// Register:</span>
+app.<span class="fn">UseMiddleware</span>&lt;<span class="ty">RequestLoggingMiddleware</span>&gt;();</pre>
+        </section>
+
+        <!-- ═══════════════════════ SOLID ═══════════════════════ -->
+        <section class="section" id="solid">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(246, 173, 85, 0.12)"
+            >
+              🏗️
+            </div>
+            <div class="section-title">SOLID Principles</div>
+            <span class="section-badge badge-yellow">⚡ Always asked</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">S — Single Responsibility Principle</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                A class should have <strong>one reason to change</strong>. Don't
+                mix business logic, data access, and email sending in one class.
+              </p>
+              <pre><span class="cm">// ❌ Violates SRP – does too many things</span>
+<span class="kw">public class</span> <span class="ty">OrderManager</span> { <span class="kw">void</span> <span class="fn">PlaceOrder</span>(){} <span class="kw">void</span> <span class="fn">SendEmail</span>(){} <span class="kw">void</span> <span class="fn">SaveToDb</span>(){} }
+
+<span class="cm">// ✅ Each class has one job</span>
+<span class="kw">public class</span> <span class="ty">OrderService</span>   { <span class="kw">void</span> <span class="fn">PlaceOrder</span>(){} }
+<span class="kw">public class</span> <span class="ty">EmailService</span>   { <span class="kw">void</span> <span class="fn">SendConfirmation</span>(){} }
+<span class="kw">public class</span> <span class="ty">OrderRepository</span> { <span class="kw">void</span> <span class="fn">Save</span>(){} }</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">O — Open/Closed Principle</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Open for <strong>extension</strong>, closed for
+                <strong>modification</strong>. Add new behaviour without
+                changing existing code — use interfaces and polymorphism.
+              </p>
+              <pre><span class="kw">public interface</span> <span class="ty">IDiscount</span> { <span class="kw">decimal</span> <span class="fn">Apply</span>(<span class="kw">decimal</span> price); }
+
+<span class="kw">public class</span> <span class="ty">ChristmasDiscount</span> : <span class="ty">IDiscount</span>
+    { <span class="kw">public decimal</span> <span class="fn">Apply</span>(<span class="kw">decimal</span> p) =&gt; p * <span class="num">0.9m</span>; }
+
+<span class="kw">public class</span> <span class="ty">BlackFridayDiscount</span> : <span class="ty">IDiscount</span>
+    { <span class="kw">public decimal</span> <span class="fn">Apply</span>(<span class="kw">decimal</span> p) =&gt; p * <span class="num">0.5m</span>; }
+<span class="cm">// Add new discount types without touching OrderService</span></pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">L — Liskov Substitution Principle</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                A subclass must be <strong>substitutable</strong> for its base
+                class without breaking the program. If
+                <code>Bird.Fly()</code> exists, a <code>Penguin</code> subclass
+                that throws on Fly() violates LSP.
+              </p>
+              <pre><span class="cm">// ✅ Design around capability, not hierarchy</span>
+<span class="kw">public interface</span> <span class="ty">IFlyable</span> { <span class="kw">void</span> <span class="fn">Fly</span>(); }
+<span class="kw">public class</span> <span class="ty">Eagle</span> : <span class="ty">IFlyable</span> { <span class="kw">public void</span> <span class="fn">Fly</span>() =&gt; ...; }
+<span class="kw">public class</span> <span class="ty">Penguin</span> { } <span class="cm">// does NOT implement IFlyable</span></pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">I — Interface Segregation Principle</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Don't force a class to implement methods it doesn't need. Split
+                fat interfaces into focused ones.
+              </p>
+              <pre><span class="cm">// ❌ Fat interface forces every class to implement everything</span>
+<span class="kw">public interface</span> <span class="ty">IWorker</span> { <span class="kw">void</span> <span class="fn">Work</span>(); <span class="kw">void</span> <span class="fn">Eat</span>(); <span class="kw">void</span> <span class="fn">Sleep</span>(); }
+
+<span class="cm">// ✅ Segregated</span>
+<span class="kw">public interface</span> <span class="ty">IWorkable</span>  { <span class="kw">void</span> <span class="fn">Work</span>(); }
+<span class="kw">public interface</span> <span class="ty">IFeedable</span>  { <span class="kw">void</span> <span class="fn">Eat</span>(); }
+<span class="kw">public interface</span> <span class="ty">ISleepable</span> { <span class="kw">void</span> <span class="fn">Sleep</span>(); }</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">D — Dependency Inversion Principle</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                High-level modules should not depend on low-level modules — both
+                should depend on <strong>abstractions (interfaces)</strong>.
+                This is what makes DI work.
+              </p>
+              <pre><span class="cm">// ❌ High-level depends on concrete class</span>
+<span class="kw">public class</span> <span class="ty">OrderService</span> { <span class="kw">private</span> <span class="ty">SqlOrderRepository</span> _repo = <span class="kw">new</span>(); }
+
+<span class="cm">// ✅ Depends on interface – swap implementation without changing OrderService</span>
+<span class="kw">public class</span> <span class="ty">OrderService</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">IOrderRepository</span> _repo;
+    <span class="kw">public</span> <span class="fn">OrderService</span>(<span class="ty">IOrderRepository</span> repo) =&gt; _repo = repo;
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ PATTERNS ═══════════════════════ -->
+        <section class="section" id="patterns">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(246, 173, 85, 0.12)"
+            >
+              🧩
+            </div>
+            <div class="section-title">Design Patterns</div>
+            <span class="section-badge badge-yellow">Part 3</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Repository Pattern</div>
+              <span class="topic-tag badge-yellow">⚡ Very common</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Abstracts data access behind an interface. Controllers/services
+                don't care whether data comes from SQL, MongoDB, or an in-memory
+                stub — easy to test.
+              </p>
+              <pre><span class="kw">public interface</span> <span class="ty">IProductRepository</span>
+{
+    <span class="ty">Task</span>&lt;<span class="ty">Product</span>?&gt;            <span class="fn">GetByIdAsync</span>(<span class="kw">int</span> id);
+    <span class="ty">Task</span>&lt;<span class="ty">IEnumerable</span>&lt;<span class="ty">Product</span>&gt;&gt; <span class="fn">GetAllAsync</span>();
+    <span class="ty">Task</span>                       <span class="fn">AddAsync</span>(<span class="ty">Product</span> p);
+    <span class="ty">Task</span>                       <span class="fn">DeleteAsync</span>(<span class="kw">int</span> id);
+}
+
+<span class="kw">public class</span> <span class="ty">ProductRepository</span> : <span class="ty">IProductRepository</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">AppDbContext</span> _db;
+    <span class="kw">public</span> <span class="fn">ProductRepository</span>(<span class="ty">AppDbContext</span> db) =&gt; _db = db;
+    <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">Product</span>?&gt; <span class="fn">GetByIdAsync</span>(<span class="kw">int</span> id)
+        =&gt; <span class="kw">await</span> _db.<span class="prop">Products</span>.<span class="fn">FindAsync</span>(id);
+    <span class="cm">// ... other methods</span>
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Singleton Pattern</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Ensures only one instance exists. In ASP.NET you get this for
+                free via <code>AddSingleton</code> — rarely implement it
+                manually.
+              </p>
+              <pre><span class="kw">public sealed class</span> <span class="ty">AppConfig</span>
+{
+    <span class="kw">private static readonly</span> <span class="ty">Lazy</span>&lt;<span class="ty">AppConfig</span>&gt; _instance =
+        <span class="kw">new</span>(() =&gt; <span class="kw">new</span> <span class="ty">AppConfig</span>());
+
+    <span class="kw">public static</span> <span class="ty">AppConfig</span> <span class="prop">Instance</span> =&gt; _instance.<span class="prop">Value</span>;
+    <span class="kw">private</span> <span class="fn">AppConfig</span>() {} <span class="cm">// private constructor</span>
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Factory Pattern</div>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Creates objects without the caller knowing the concrete type.
+                Common when you need to switch implementations based on a
+                condition.
+              </p>
+              <pre><span class="kw">public interface</span> <span class="ty">IPaymentGateway</span> { <span class="ty">Task</span> <span class="fn">ChargeAsync</span>(<span class="kw">decimal</span> amount); }
+
+<span class="kw">public class</span> <span class="ty">PaymentGatewayFactory</span>
+{
+    <span class="kw">public</span> <span class="ty">IPaymentGateway</span> <span class="fn">Create</span>(<span class="kw">string</span> provider) =&gt; provider <span class="kw">switch</span>
+    {
+        <span class="str">"stripe"</span>  =&gt; <span class="kw">new</span> <span class="ty">StripeGateway</span>(),
+        <span class="str">"paypal"</span>  =&gt; <span class="kw">new</span> <span class="ty">PayPalGateway</span>(),
+        _         =&gt; <span class="kw">throw new</span> <span class="ty">NotSupportedException</span>(provider)
+    };
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ SQL ═══════════════════════ -->
+        <section class="section" id="sql">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(246, 173, 85, 0.12)"
+            >
+              🗃️
+            </div>
+            <div class="section-title">SQL</div>
+            <span class="section-badge badge-yellow">Part 3</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">JOINs — the most tested SQL topic</div>
+              <span class="topic-tag badge-yellow">⚡ Very important</span>
+            </div>
+            <div class="topic-body">
+              <table class="tbl">
+                <tr>
+                  <th>JOIN type</th>
+                  <th>Returns</th>
+                </tr>
+                <tr>
+                  <td><code>INNER JOIN</code></td>
+                  <td>Only rows that match in both tables</td>
+                </tr>
+                <tr>
+                  <td><code>LEFT JOIN</code></td>
+                  <td>
+                    All from left + matched from right (NULLs if no match)
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>RIGHT JOIN</code></td>
+                  <td>All from right + matched from left</td>
+                </tr>
+                <tr>
+                  <td><code>FULL OUTER JOIN</code></td>
+                  <td>All rows from both, NULLs where no match</td>
+                </tr>
+              </table>
+              <pre
+                style="margin-top: 12px"
+              ><span class="cm">-- Get all customers with their orders (or NULL if no orders)</span>
+<span class="kw">SELECT</span> c.Name, o.OrderDate, o.Total
+<span class="kw">FROM</span>   Customers c
+<span class="kw">LEFT JOIN</span> Orders o <span class="kw">ON</span> c.Id = o.CustomerId
+<span class="kw">ORDER BY</span> c.Name;
+
+<span class="cm">-- Aggregate: total spent per customer, only those &gt; 1000</span>
+<span class="kw">SELECT</span>   c.Name, <span class="fn">SUM</span>(o.Total) <span class="kw">AS</span> TotalSpent
+<span class="kw">FROM</span>     Customers c
+<span class="kw">JOIN</span>     Orders o <span class="kw">ON</span> c.Id = o.CustomerId
+<span class="kw">GROUP BY</span> c.Name
+<span class="kw">HAVING</span>   <span class="fn">SUM</span>(o.Total) &gt; <span class="num">1000</span>
+<span class="kw">ORDER BY</span> TotalSpent <span class="kw">DESC</span>;</pre>
+              <div class="note">
+                <span class="note-icon">💡</span
+                ><strong>WHERE vs HAVING</strong>: WHERE filters rows before
+                grouping. HAVING filters after grouping (use with GROUP BY +
+                aggregates).
+              </div>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Indexes — why queries are slow</div>
+              <span class="topic-tag badge-blue">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Without an index, SQL scans every row (full table scan). An
+                index is a sorted lookup structure — dramatically speeds up
+                WHERE/JOIN on large tables. EF Core lets you define them in
+                code.
+              </p>
+              <pre><span class="cm">-- SQL</span>
+<span class="kw">CREATE INDEX</span> IX_Orders_CustomerId <span class="kw">ON</span> Orders(CustomerId);
+
+<span class="cm">// EF Core fluent config</span>
+modelBuilder.<span class="fn">Entity</span>&lt;<span class="ty">Order</span>&gt;()
+    .<span class="fn">HasIndex</span>(o =&gt; o.CustomerId)
+    .<span class="fn">HasDatabaseName</span>(<span class="str">"IX_Orders_CustomerId"</span>);</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ HTTP ═══════════════════════ -->
+        <section class="section" id="http">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(246, 173, 85, 0.12)"
+            >
+              📡
+            </div>
+            <div class="section-title">HTTP Status Codes</div>
+            <span class="section-badge badge-yellow">Part 3</span>
+          </div>
+          <div class="status-grid">
+            <div class="status-card">
+              <div class="status-code c-green">200</div>
+              <div class="status-name">OK</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-green">201</div>
+              <div class="status-name">Created</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-green">204</div>
+              <div class="status-name">No Content</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-yellow">301</div>
+              <div class="status-name">Moved Permanently</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-yellow">304</div>
+              <div class="status-name">Not Modified</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-red">400</div>
+              <div class="status-name">Bad Request</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-red">401</div>
+              <div class="status-name">Unauthorized</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-red">403</div>
+              <div class="status-name">Forbidden</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-red">404</div>
+              <div class="status-name">Not Found</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-red">409</div>
+              <div class="status-name">Conflict</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-red">422</div>
+              <div class="status-name">Unprocessable</div>
+            </div>
+            <div class="status-card">
+              <div class="status-code c-accent4">500</div>
+              <div class="status-name">Server Error</div>
+            </div>
+          </div>
+          <div class="tip" style="margin-top: 16px">
+            <span>✅</span
+            ><span
+              ><strong>401 vs 403</strong>: 401 = not authenticated (no valid
+              token). 403 = authenticated but not allowed (token valid, wrong
+              role). A common interview gotcha!</span
+            >
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ GIT ═══════════════════════ -->
+        <section class="section" id="git">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(246, 173, 85, 0.12)"
+            >
+              🌿
+            </div>
+            <div class="section-title">Git Essentials</div>
+            <span class="section-badge badge-yellow">Part 3</span>
+          </div>
+          <div class="cards">
+            <div class="card">
+              <div class="card-title">
+                <span class="dot" style="background: var(--accent)"></span>Daily
+                workflow
+              </div>
+              <div class="card-body">
+                <pre
+                  style="
+                    margin: 0;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                    font-size: 12px;
+                  "
+                ><span class="prop">git status</span>          <span class="cm"># what changed?</span>
+<span class="prop">git add .</span>           <span class="cm"># stage all</span>
+<span class="prop">git commit -m "..."</span>
+<span class="prop">git push</span></pre>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">
+                <span class="dot" style="background: var(--accent2)"></span
+                >Branching
+              </div>
+              <div class="card-body">
+                <pre
+                  style="
+                    margin: 0;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                    font-size: 12px;
+                  "
+                ><span class="prop">git checkout -b feature/login</span>
+<span class="prop">git merge main</span>      <span class="cm"># merge main into feature</span>
+<span class="prop">git rebase main</span>    <span class="cm"># cleaner history</span></pre>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">
+                <span class="dot" style="background: var(--accent3)"></span>Undo
+                &amp; fix
+              </div>
+              <div class="card-body">
+                <pre
+                  style="
+                    margin: 0;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                    font-size: 12px;
+                  "
+                ><span class="prop">git reset --soft HEAD~1</span>  <span class="cm"># undo commit, keep changes</span>
+<span class="prop">git stash</span>               <span class="cm"># save without committing</span>
+<span class="prop">git stash pop</span></pre>
+              </div>
+            </div>
+          </div>
+          <div class="note" style="margin-top: 16px">
+            <span class="note-icon">💡</span><strong>merge vs rebase</strong>:
+            <code>merge</code> creates a merge commit (full history).
+            <code>rebase</code> rewrites history into a linear sequence —
+            cleaner but rewrites commits, so never rebase public/shared
+            branches.
+          </div>
+        </section>
+
+        <!-- ═══════════════════════ EXTRAS ═══════════════════════ -->
+        <section class="section" id="extras">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="background: rgba(252, 129, 129, 0.12)"
+            >
+              ★
+            </div>
+            <div class="section-title">
+              Added Extras — Important Topics Not to Miss
+            </div>
+            <span class="section-badge badge-red">Bonus</span>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">
+                IDisposable &amp; using statement (resource management)
+              </div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Unmanaged resources (DB connections, file handles, streams) must
+                be freed. Implement <code>IDisposable</code> and use the
+                <code>using</code> statement — it automatically calls
+                <code>Dispose()</code> even if an exception is thrown.
+              </p>
+              <pre><span class="cm">// using statement – Dispose called automatically</span>
+<span class="kw">await using var</span> conn = <span class="kw">new</span> <span class="ty">SqlConnection</span>(connStr);
+<span class="kw">await</span> conn.<span class="fn">OpenAsync</span>();
+<span class="cm">// conn.Dispose() called here even if exception thrown above</span>
+
+<span class="cm">// Custom disposable class</span>
+<span class="kw">public class</span> <span class="ty">FileManager</span> : <span class="ty">IDisposable</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">FileStream</span> _stream;
+    <span class="kw">public</span> <span class="fn">FileManager</span>(<span class="kw">string</span> path) =&gt; _stream = <span class="ty">File</span>.<span class="fn">OpenRead</span>(path);
+    <span class="kw">public void</span> <span class="fn">Dispose</span>() =&gt; _stream.<span class="fn">Dispose</span>();
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Records (C# 9+)</div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <strong>Records</strong> are immutable reference types with
+                value-based equality. Perfect for DTOs.
+                <code>with</code> creates a copy with some properties changed.
+              </p>
+              <pre><span class="kw">public record</span> <span class="ty">UserDto</span>(<span class="kw">int</span> Id, <span class="kw">string</span> Name, <span class="kw">string</span> Email);
+
+<span class="kw">var</span> user    = <span class="kw">new</span> <span class="ty">UserDto</span>(<span class="num">1</span>, <span class="str">"Alice"</span>, <span class="str">"alice@x.com"</span>);
+<span class="kw">var</span> updated = user <span class="kw">with</span> { Email = <span class="str">"newalice@x.com"</span> }; <span class="cm">// non-destructive copy</span>
+<span class="kw">bool</span> same   = user == <span class="kw">new</span> <span class="ty">UserDto</span>(<span class="num">1</span>, <span class="str">"Alice"</span>, <span class="str">"alice@x.com"</span>); <span class="cm">// true!</span></pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Generic Repository + Unit of Work</div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                A <strong>generic repository</strong> avoids writing CRUD for
+                every entity. The <strong>Unit of Work</strong> wraps multiple
+                repositories in a single transaction (one
+                <code>SaveChangesAsync</code> call).
+              </p>
+              <pre><span class="kw">public interface</span> <span class="ty">IRepository</span>&lt;<span class="ty">T</span>&gt; <span class="kw">where</span> <span class="ty">T</span> : <span class="kw">class</span>
+{
+    <span class="ty">Task</span>&lt;<span class="ty">T</span>?&gt;            <span class="fn">GetByIdAsync</span>(<span class="kw">int</span> id);
+    <span class="ty">Task</span>&lt;<span class="ty">IEnumerable</span>&lt;<span class="ty">T</span>&gt;&gt; <span class="fn">GetAllAsync</span>();
+    <span class="ty">Task</span>                 <span class="fn">AddAsync</span>(<span class="ty">T</span> entity);
+    <span class="kw">void</span>                 <span class="fn">Remove</span>(<span class="ty">T</span> entity);
+}
+
+<span class="kw">public interface</span> <span class="ty">IUnitOfWork</span> : <span class="ty">IDisposable</span>
+{
+    <span class="ty">IRepository</span>&lt;<span class="ty">Order</span>&gt;   <span class="prop">Orders</span>   { <span class="kw">get</span>; }
+    <span class="ty">IRepository</span>&lt;<span class="ty">Product</span>&gt; <span class="prop">Products</span> { <span class="kw">get</span>; }
+    <span class="ty">Task</span>&lt;<span class="kw">int</span>&gt; <span class="fn">CompleteAsync</span>(); <span class="cm">// single SaveChangesAsync</span>
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Options Pattern (IOptions&lt;T&gt;)</div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Strongly-typed config binding. No more magic strings —
+                type-safe, injectable, and testable.
+              </p>
+              <pre><span class="cm">// appsettings.json</span>
+{ "Jwt": { "Key": "supersecret", "Issuer": "myapp", "ExpiryMinutes": 60 } }
+
+<span class="cm">// Config class</span>
+<span class="kw">public class</span> <span class="ty">JwtSettings</span>
+{
+    <span class="kw">public string</span> <span class="prop">Key</span>           { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">""</span>;
+    <span class="kw">public string</span> <span class="prop">Issuer</span>        { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">""</span>;
+    <span class="kw">public int</span>    <span class="prop">ExpiryMinutes</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+
+<span class="cm">// Register</span>
+builder.Services.<span class="fn">Configure</span>&lt;<span class="ty">JwtSettings</span>&gt;(builder.Configuration.<span class="fn">GetSection</span>(<span class="str">"Jwt"</span>));
+
+<span class="cm">// Inject</span>
+<span class="kw">public class</span> <span class="ty">AuthService</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">JwtSettings</span> _jwt;
+    <span class="kw">public</span> <span class="fn">AuthService</span>(<span class="ty">IOptions</span>&lt;<span class="ty">JwtSettings</span>&gt; opts) =&gt; _jwt = opts.<span class="prop">Value</span>;
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">
+                Global Exception Handling Middleware
+              </div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Catch all unhandled exceptions in one place, return a consistent
+                JSON error response, and log the error. Interviewers love this
+                pattern.
+              </p>
+              <pre><span class="kw">public class</span> <span class="ty">GlobalExceptionMiddleware</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">RequestDelegate</span> _next;
+    <span class="kw">private readonly</span> <span class="ty">ILogger</span>&lt;<span class="ty">GlobalExceptionMiddleware</span>&gt; _logger;
+
+    <span class="kw">public async</span> <span class="ty">Task</span> <span class="fn">InvokeAsync</span>(<span class="ty">HttpContext</span> ctx)
+    {
+        <span class="kw">try</span>   { <span class="kw">await</span> <span class="fn">_next</span>(ctx); }
+        <span class="kw">catch</span> (<span class="ty">Exception</span> ex)
+        {
+            _logger.<span class="fn">LogError</span>(ex, <span class="str">"Unhandled exception"</span>);
+            ctx.Response.StatusCode  = <span class="num">500</span>;
+            ctx.Response.ContentType = <span class="str">"application/json"</span>;
+            <span class="kw">await</span> ctx.Response.<span class="fn">WriteAsJsonAsync</span>(<span class="kw">new</span>
+            {
+                statusCode = <span class="num">500</span>,
+                message    = <span class="str">"An unexpected error occurred."</span>
+            });
+        }
+    }
+}</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">
+                CORS (Cross-Origin Resource Sharing)
+              </div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Browsers block requests from a different origin (domain/port)
+                unless the server explicitly allows it. You'll need this the
+                moment your React frontend talks to your .NET API.
+              </p>
+              <pre><span class="cm">// Program.cs</span>
+builder.Services.<span class="fn">AddCors</span>(o =&gt; o.<span class="fn">AddPolicy</span>(<span class="str">"AllowFrontend"</span>, policy =&gt;
+    policy.<span class="fn">WithOrigins</span>(<span class="str">"http://localhost:3000"</span>)
+          .<span class="fn">AllowAnyHeader</span>()
+          .<span class="fn">AllowAnyMethod</span>()));
+
+app.<span class="fn">UseCors</span>(<span class="str">"AllowFrontend"</span>); <span class="cm">// must be before UseAuth</span></pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">Swagger / OpenAPI</div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                Auto-generates interactive API documentation. Essential for
+                every .NET API. Always included by default in
+                <code>dotnet new webapi</code>.
+              </p>
+              <pre><span class="cm">// Program.cs</span>
+builder.Services.<span class="fn">AddEndpointsApiExplorer</span>();
+builder.Services.<span class="fn">AddSwaggerGen</span>();
+
+<span class="kw">if</span> (app.Environment.<span class="fn">IsDevelopment</span>())
+{
+    app.<span class="fn">UseSwagger</span>();
+    app.<span class="fn">UseSwaggerUI</span>(); <span class="cm">// → http://localhost:5000/swagger</span>
+}
+
+<span class="cm">// Add JWT support to Swagger UI</span>
+builder.Services.<span class="fn">AddSwaggerGen</span>(c =&gt; c.<span class="fn">AddSecurityDefinition</span>(<span class="str">"Bearer"</span>, <span class="kw">new</span> <span class="ty">OpenApiSecurityScheme</span>
+{
+    <span class="prop">In</span>     = <span class="ty">ParameterLocation</span>.<span class="prop">Header</span>,
+    <span class="prop">Name</span>   = <span class="str">"Authorization"</span>,
+    <span class="prop">Type</span>   = <span class="ty">SecuritySchemeType</span>.<span class="prop">Http</span>,
+    <span class="prop">Scheme</span> = <span class="str">"bearer"</span>
+}));</pre>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-header">
+              <div class="topic-title">
+                Caching (IMemoryCache &amp; IDistributedCache)
+              </div>
+              <span class="topic-tag badge-red">Added ★</span>
+            </div>
+            <div class="topic-body">
+              <p class="topic-desc">
+                <strong>IMemoryCache</strong>: in-process cache, single server.
+                <strong>IDistributedCache</strong>: shared across servers
+                (Redis). Cache frequently-read, rarely-changed data.
+              </p>
+              <pre><span class="cm">// Register</span>
+builder.Services.<span class="fn">AddMemoryCache</span>();
+
+<span class="cm">// Use (cache-aside pattern)</span>
+<span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">IEnumerable</span>&lt;<span class="ty">Product</span>&gt;&gt; <span class="fn">GetProductsAsync</span>()
+{
+    <span class="kw">if</span> (!_cache.<span class="fn">TryGetValue</span>(<span class="str">"products"</span>, <span class="kw">out</span> <span class="ty">IEnumerable</span>&lt;<span class="ty">Product</span>&gt;? products))
+    {
+        products = <span class="kw">await</span> _repo.<span class="fn">GetAllAsync</span>();
+        <span class="kw">var</span> opts = <span class="kw">new</span> <span class="ty">MemoryCacheEntryOptions</span>()
+            .<span class="fn">SetAbsoluteExpiration</span>(<span class="ty">TimeSpan</span>.<span class="fn">FromMinutes</span>(<span class="num">10</span>));
+        _cache.<span class="fn">Set</span>(<span class="str">"products"</span>, products, opts);
+    }
+    <span class="kw">return</span> products!;
+}</pre>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
