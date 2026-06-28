@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>.NET Interview Q&A</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:       #0d1117;
+    --surface:  #161b27;
+    --surface2: #1c2333;
+    --border:   rgba(255,255,255,0.08);
+    --text:     #f0f4ff;
+    --muted:    #8b9ab4;
+    --accent:   #60a5fa;
+    --green:    #4ade80;
+    --yellow:   #fbbf24;
+    --red:      #f87171;
+    --purple:   #c084fc;
+    --teal:     #2dd4bf;
+    --radius:   10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 60px 24px 52px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: 34px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .chip {
+    background: rgba(96,165,250,0.1);
+    border: 1px solid rgba(96,165,250,0.25);
+    color: var(--accent);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ── Layout ── */
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── Day header ── */
+  .day-header {
+    margin-top: 56px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .day-pill {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .day-line { flex: 1; height: 1px; background: var(--border); }
+  .day-title { font-size: 22px; font-weight: 600; color: #fff; }
+
+  /* ── Module header ── */
+  .module-header {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .module-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Question card ── */
+  .qcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .qcard:hover { border-color: rgba(255,255,255,0.14); }
+
+  .qcard-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .q-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    background: rgba(96,165,250,0.1);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 6px;
+    padding: 3px 9px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: #e8eef8;
+    flex: 1;
+    line-height: 1.5;
+  }
+  .q-chevron {
+    color: var(--muted);
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: transform 0.25s;
+  }
+  .qcard.open .q-chevron { transform: rotate(180deg); }
+
+  /* Answer panel */
+  .qcard-body {
+    display: none;
+    padding: 0 22px 22px 22px;
+    border-top: 1px solid var(--border);
+  }
+  .qcard.open .qcard-body { display: block; }
+
+  .answer-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 16px 0 10px;
+    font-weight: 600;
+  }
+  .answer-text {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.8;
+  }
+  .answer-text p { margin-bottom: 10px; }
+  .answer-text p:last-child { margin-bottom: 0; }
+  .answer-text strong { color: #fff; font-weight: 600; }
+
+  /* Code block */
+  pre {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+  .kw  { color: #ff79c6; }
+  .ty  { color: #8be9fd; }
+  .str { color: #f1fa8c; }
+  .cm  { color: #6272a4; }
+  .fn  { color: #50fa7b; }
+  .num { color: #bd93f9; }
+  .prop{ color: #2dd4bf; }
+
+  /* Comparison table */
+  .tbl { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  .tbl th {
+    text-align: left;
+    padding: 9px 14px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .tbl tr:last-child td { border-bottom: none; }
+
+  /* Keywords */
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .kw-tag {
+    background: rgba(192,132,252,0.1);
+    border: 1px solid rgba(192,132,252,0.25);
+    color: var(--purple);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* List */
+  .ans-list { list-style: none; margin: 8px 0; }
+  .ans-list li {
+    padding: 5px 0;
+    font-size: 14.5px;
+    color: var(--text);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .ans-list li:last-child { border-bottom: none; }
+  .ans-list li::before { content: '›'; color: var(--accent); flex-shrink: 0; }
+
+  /* ── Checklist section ── */
+  .checklist-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 56px;
+  }
+  .checklist-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .checklist-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 10px;
+  }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(74,222,128,0.15);
+    border: 1px solid rgba(74,222,128,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 11px;
+    color: var(--green);
+  }
+  .check-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #e8eef8;
+    line-height: 1.4;
+  }
+  .check-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 24px; }
+    .qcard-header { padding: 14px 16px; }
+    .qcard-body { padding: 0 16px 18px; }
+    .checklist-grid { grid-template-columns: 1fr; }
+    .checklist-section { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">3-day crash course</div>
+  <h1>.NET Interview <span>60 Questions</span></h1>
+  <p>Junior – Mid .NET Backend Developer · Click any question to reveal the answer</p>
+  <div class="hero-chips">
+    <span class="chip">C# Fundamentals</span>
+    <span class="chip">OOP</span>
+    <span class="chip">Collections</span>
+    <span class="chip">ASP.NET Core</span>
+    <span class="chip">EF Core</span>
+    <span class="chip">SQL</span>
+    <span class="chip">REST APIs</span>
+    <span class="chip">async/await</span>
+    <span class="chip">SOLID</span>
+    <span class="chip">Behavioral</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ════════════════ DAY 1 ════════════════ -->
+  <div class="day-header">
+    <span class="day-pill" style="background:rgba(96,165,250,0.12);color:var(--accent);border:1px solid rgba(96,165,250,0.3)">Day 1</span>
+    <div class="day-line"></div>
+    <div class="day-title">C# Fundamentals</div>
+  </div>
+
+  <!-- Module 1 -->
+  <div class="module-header">Module 1 — CLR &amp; .NET Basics</div>
+
+  <!-- Q1 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q01</span>
+      <span class="q-text">What happens when a C# program runs?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <ol class="ans-list" style="list-style:none">
+        <li>You write C# source code.</li>
+        <li>The compiler converts it to <strong>IL (Intermediate Language)</strong>.</li>
+        <li>The CLR loads the compiled assembly.</li>
+        <li>The <strong>JIT compiler</strong> converts IL into native machine code on the fly.</li>
+        <li>The CPU executes the native code.</li>
+      </ol>
+      <div class="answer-label" style="margin-top:16px">Keywords to mention</div>
+      <div class="keywords">
+        <span class="kw-tag">CLR</span>
+        <span class="kw-tag">IL</span>
+        <span class="kw-tag">JIT</span>
+        <span class="kw-tag">Assembly</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q02</span>
+      <span class="q-text">What is CLR?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>CLR (Common Language Runtime)</strong> is the execution environment for .NET applications. It handles everything so you don't have to manage low-level details.</p></div>
+      <ul class="ans-list" style="margin-top:8px">
+        <li>Memory management &amp; Garbage Collection</li>
+        <li>Exception Handling</li>
+        <li>Security enforcement</li>
+        <li>Thread Management</li>
+        <li>JIT Compilation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q03</span>
+      <span class="q-text">What is CTS?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>CTS (Common Type System)</strong> defines all data types shared across every .NET language. It ensures an <code>int</code> in C# is the same type as an <code>Integer</code> in VB.NET.</p></div>
+      <div class="keywords"><span class="kw-tag">int</span><span class="kw-tag">double</span><span class="kw-tag">string</span><span class="kw-tag">object</span></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q04</span>
+      <span class="q-text">What is CLS?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>CLS (Common Language Specification)</strong> is a set of rules that all .NET languages must follow so they can interoperate. For example, a C# library can be consumed directly from VB.NET thanks to CLS.</p></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q05</span>
+      <span class="q-text">Difference between .NET Framework and .NET (Core)?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>.NET Framework</th><th>.NET (Core / 5+)</th></tr>
+        <tr><td>Windows only</td><td>Cross-platform (Windows, Linux, Mac)</td></tr>
+        <tr><td>No longer actively developed</td><td>Actively maintained — the future</td></tr>
+        <tr><td>ASP.NET (classic)</td><td>ASP.NET Core</td></tr>
+        <tr><td>Slower startup</td><td>Faster, lighter, Docker-friendly</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Module 2 -->
+  <div class="module-header">Module 2 — C# Language</div>
+
+  <!-- Q6 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q06</span>
+      <span class="q-text">Difference between Value Type and Reference Type?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Value Type</th><th>Reference Type</th></tr>
+        <tr><td>Stored on the Stack</td><td>Stored on the Heap</td></tr>
+        <tr><td>Holds the actual data</td><td>Holds a memory address (pointer)</td></tr>
+        <tr><td>Copied on assignment</td><td>Both variables point to same object</td></tr>
+        <tr><td>int, bool, struct, enum</td><td>class, string, array, List</td></tr>
+      </table>
+      <pre><span class="cm">// Value type — independent copies</span>
+<span class="kw">int</span> a = <span class="num">5</span>;
+<span class="kw">int</span> b = a;
+b = <span class="num">10</span>; <span class="cm">// a is still 5</span></pre>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q07</span>
+      <span class="q-text">What is Boxing and Unboxing?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>Boxing</strong> converts a value type into an <code>object</code> (heap allocation). <strong>Unboxing</strong> extracts the value type back. Both have a performance cost — avoid in hot loops.</p></div>
+      <pre><span class="cm">// Boxing — value → object</span>
+<span class="kw">int</span> x = <span class="num">5</span>;
+<span class="kw">object</span> obj = x;
+
+<span class="cm">// Unboxing — object → value (must cast explicitly)</span>
+<span class="kw">int</span> y = (<span class="kw">int</span>)obj;</pre>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q08</span>
+      <span class="q-text">Difference between ref, out, and in?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Keyword</th><th>Must initialise before call?</th><th>Direction</th></tr>
+        <tr><td><code>ref</code></td><td>Yes</td><td>Two-way (in and out)</td></tr>
+        <tr><td><code>out</code></td><td>No (method must assign it)</td><td>Output only</td></tr>
+        <tr><td><code>in</code></td><td>Yes</td><td>Read-only reference (no copy, no modify)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q09</span>
+      <span class="q-text">const vs readonly — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>const</th><th>readonly</th></tr>
+        <tr><td>Compile-time constant</td><td>Set at runtime (in constructor)</td></tr>
+        <tr><td>Must be a literal value</td><td>Can be an object or computed value</td></tr>
+        <tr><td>Implicitly static</td><td>Can be instance or static</td></tr>
+      </table>
+      <pre><span class="kw">public const string</span>   AppName    = <span class="str">"MyApp"</span>;
+<span class="kw">public readonly</span> <span class="ty">Guid</span>  InstanceId = <span class="ty">Guid</span>.<span class="fn">NewGuid</span>(); <span class="cm">// runtime</span></pre>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q10</span>
+      <span class="q-text">var vs dynamic — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>var</strong>: type is inferred at <em>compile time</em> — still strongly typed, no runtime overhead.<br><strong>dynamic</strong>: type is resolved at <em>runtime</em> — bypasses compile-time checks, can change type, slower.</p></div>
+      <pre><span class="kw">var</span>     x = <span class="num">10</span>;      <span class="cm">// int — type fixed at compile time</span>
+<span class="kw">dynamic</span> y = <span class="num">10</span>;
+y = <span class="str">"Hello"</span>;        <span class="cm">// OK at runtime — type can change</span></pre>
+    </div>
+  </div>
+
+  <!-- Module 3 -->
+  <div class="module-header">Module 3 — OOP</div>
+
+  <!-- Q11 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q11</span>
+      <span class="q-text">Explain Encapsulation.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Bundling data and methods together while hiding internal details. External code only accesses what you deliberately expose through properties or methods — protecting data integrity.</p></div>
+      <pre><span class="kw">private decimal</span> _salary;
+
+<span class="kw">public decimal</span> Salary
+{
+    <span class="kw">get</span> =&gt; _salary;
+    <span class="kw">set</span> =&gt; _salary = value &gt; <span class="num">0</span> ? value : <span class="kw">throw new</span> <span class="ty">ArgumentException</span>();
+}</pre>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q12</span>
+      <span class="q-text">Explain Inheritance.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>A class can inherit members (fields, properties, methods) from another class using <code>:</code>. C# supports <strong>single class inheritance</strong> but multiple interface implementation.</p></div>
+      <pre><span class="kw">public class</span> <span class="ty">Animal</span>
+{
+    <span class="kw">public virtual void</span> <span class="fn">Speak</span>() =&gt; <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"..."</span>);
+}
+
+<span class="kw">public class</span> <span class="ty">Dog</span> : <span class="ty">Animal</span>
+{
+    <span class="kw">public override void</span> <span class="fn">Speak</span>() =&gt; <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Woof!"</span>);
+}</pre>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q13</span>
+      <span class="q-text">Explain Polymorphism.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>One interface, multiple behaviours. Two types:</p></div>
+      <ul class="ans-list">
+        <li><strong>Compile-time</strong> — Method overloading (same name, different parameters)</li>
+        <li><strong>Runtime</strong> — Method overriding using <code>virtual</code> + <code>override</code></li>
+      </ul>
+      <pre><span class="ty">Animal</span>[] animals = { <span class="kw">new</span> <span class="ty">Dog</span>(), <span class="kw">new</span> <span class="ty">Cat</span>() };
+<span class="kw">foreach</span> (<span class="kw">var</span> a <span class="kw">in</span> animals) a.<span class="fn">Speak</span>(); <span class="cm">// correct method called at runtime</span></pre>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q14</span>
+      <span class="q-text">Explain Abstraction.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Hiding the <em>how</em>, exposing only the <em>what</em>. You call <code>db.SaveChangesAsync()</code> without knowing the SQL being generated — that's abstraction. Achieved via abstract classes and interfaces.</p></div>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q15</span>
+      <span class="q-text">Interface vs Abstract Class — when do you use each?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Feature</th><th>Interface</th><th>Abstract Class</th></tr>
+        <tr><td>Multiple inheritance</td><td>✅ Yes</td><td>❌ Single only</td></tr>
+        <tr><td>Fields / state</td><td>❌ No</td><td>✅ Yes</td></tr>
+        <tr><td>Constructor</td><td>❌ No</td><td>✅ Yes</td></tr>
+        <tr><td>Use when…</td><td>Defining a capability contract</td><td>Sharing common base logic</td></tr>
+      </table>
+      <div class="answer-text" style="margin-top:10px;font-size:13.5px;color:var(--muted)">Tip: A Dog <strong style="color:var(--text)">is an</strong> Animal (abstract class). A Dog <strong style="color:var(--text)">can</strong> ISwim (interface).</div>
+    </div>
+  </div>
+
+  <!-- Module 4 -->
+  <div class="module-header">Module 4 — Collections</div>
+
+  <!-- Q16 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q16</span>
+      <span class="q-text">List vs Array — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Array</th><th>List&lt;T&gt;</th></tr>
+        <tr><td>Fixed size (set at creation)</td><td>Dynamic size (grows automatically)</td></tr>
+        <tr><td>Slightly faster (no overhead)</td><td>More flexible API (Add, Remove, LINQ)</td></tr>
+        <tr><td><code>int[]</code></td><td><code>List&lt;int&gt;</code></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q17</span>
+      <span class="q-text">Dictionary vs List — when do you use each?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Use <strong>Dictionary</strong> when you need to look up items by a key — O(1) average. Use <strong>List</strong> when order matters and you iterate or access by index — O(n) lookup.</p></div>
+      <pre><span class="cm">// Dictionary — fast by key</span>
+<span class="kw">var</span> users = <span class="kw">new</span> <span class="ty">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt;();
+users[<span class="num">1</span>] = <span class="str">"Alice"</span>;
+<span class="kw">var</span> name = users[<span class="num">1</span>]; <span class="cm">// O(1)</span></pre>
+    </div>
+  </div>
+
+  <!-- Q18 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q18</span>
+      <span class="q-text">Stack vs Queue — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Stack</th><th>Queue</th></tr>
+        <tr><td>LIFO — Last In, First Out</td><td>FIFO — First In, First Out</td></tr>
+        <tr><td>Push / Pop</td><td>Enqueue / Dequeue</td></tr>
+        <tr><td>Undo history, call stack</td><td>Job queues, message processing</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Module 5 -->
+  <div class="module-header">Module 5 — Exception Handling</div>
+
+  <!-- Q19 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q19</span>
+      <span class="q-text">Why do we use try-catch?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>To handle runtime errors gracefully instead of crashing the application. <code>catch</code> handles specific errors, <code>finally</code> always runs (great for cleanup like closing DB connections).</p></div>
+      <pre><span class="kw">try</span>   { <span class="kw">var</span> data = <span class="kw">await</span> _repo.<span class="fn">GetAsync</span>(id); }
+<span class="kw">catch</span> (<span class="ty">NotFoundException</span> ex) { <span class="kw">return</span> <span class="fn">NotFound</span>(ex.Message); }
+<span class="kw">catch</span> (<span class="ty">Exception</span> ex)         { _logger.<span class="fn">LogError</span>(ex, <span class="str">"Unexpected"</span>); <span class="kw">return</span> <span class="fn">StatusCode</span>(<span class="num">500</span>); }
+<span class="kw">finally</span>                        { <span class="cm">/* cleanup — always runs */</span> }</pre>
+    </div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q20</span>
+      <span class="q-text">throw vs throw ex — which do you use and why?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Always use <code>throw;</code> (no argument). It <strong>preserves the original stack trace</strong> so you can see exactly where the error started. <code>throw ex;</code> resets the stack trace to the current line — you lose the real origin of the bug.</p></div>
+      <pre><span class="kw">catch</span> (<span class="ty">Exception</span> ex)
+{
+    _logger.<span class="fn">LogError</span>(ex, <span class="str">"Error in GetOrder"</span>);
+    <span class="kw">throw</span>;    <span class="cm">// ✅ keeps original stack trace</span>
+    <span class="cm">// throw ex; ← ❌ loses stack trace</span>
+}</pre>
+    </div>
+  </div>
+
+  <!-- ════════════════ DAY 2 ════════════════ -->
+  <div class="day-header">
+    <span class="day-pill" style="background:rgba(45,212,191,0.1);color:var(--teal);border:1px solid rgba(45,212,191,0.3)">Day 2</span>
+    <div class="day-line"></div>
+    <div class="day-title">ASP.NET Core + EF Core</div>
+  </div>
+
+  <!-- Module 6 -->
+  <div class="module-header">Module 6 — ASP.NET Core</div>
+
+  <!-- Q21 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q21</span>
+      <span class="q-text">Explain the ASP.NET Core Request Pipeline.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Every HTTP request passes through a chain of <strong>middleware</strong> in order, then the response flows back out the same way. Each middleware can short-circuit the chain.</p></div>
+      <pre>Request → Exception Handling → Authentication → Authorization
+       → Routing → Controller Action → Response</pre>
+      <pre><span class="cm">// Order matters in Program.cs</span>
+app.<span class="fn">UseExceptionHandler</span>();
+app.<span class="fn">UseAuthentication</span>();  <span class="cm">// must be before Authorization</span>
+app.<span class="fn">UseAuthorization</span>();
+app.<span class="fn">MapControllers</span>();</pre>
+    </div>
+  </div>
+
+  <!-- Q22 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q22</span>
+      <span class="q-text">What is Middleware?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>A component that sits in the request/response pipeline. It can inspect, modify, or short-circuit the request. Common examples: authentication, logging, exception handling, CORS.</p></div>
+      <pre><span class="kw">public async</span> <span class="ty">Task</span> <span class="fn">InvokeAsync</span>(<span class="ty">HttpContext</span> ctx)
+{
+    <span class="cm">// before controller</span>
+    <span class="kw">await</span> <span class="fn">_next</span>(ctx); <span class="cm">// call next middleware</span>
+    <span class="cm">// after controller — e.g. log response time</span>
+}</pre>
+    </div>
+  </div>
+
+  <!-- Q23 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q23</span>
+      <span class="q-text">What is Dependency Injection and why do we use it?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Instead of a class creating its own dependencies with <code>new</code>, the DI container provides them via the constructor. Advantages: <strong>loose coupling, testability</strong> (swap real DB for a mock), and <strong>maintainability</strong>.</p></div>
+      <pre><span class="cm">// Without DI — tightly coupled, hard to test</span>
+<span class="kw">var</span> repo = <span class="kw">new</span> <span class="ty">OrderRepository</span>(); <span class="cm">// can't swap for test</span>
+
+<span class="cm">// With DI — injected, easy to mock</span>
+<span class="kw">public</span> <span class="fn">OrderService</span>(<span class="ty">IOrderRepository</span> repo) =&gt; _repo = repo;</pre>
+    </div>
+  </div>
+
+  <!-- Q24 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q24</span>
+      <span class="q-text">Explain the three DI service lifetimes.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Lifetime</th><th>When created</th><th>Typical use</th></tr>
+        <tr><td><strong>Transient</strong></td><td>Every time it is requested</td><td>Stateless services, email sender</td></tr>
+        <tr><td><strong>Scoped</strong></td><td>Once per HTTP request</td><td>DbContext, repositories</td></tr>
+        <tr><td><strong>Singleton</strong></td><td>Once for the entire app lifetime</td><td>Config, cache, logging</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q25 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q25</span>
+      <span class="q-text">Why do we use DTOs?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>DTOs (Data Transfer Objects) decouple your API shape from your database entity. You control exactly what the client sees and sends.</p></div>
+      <ul class="ans-list">
+        <li><strong>Security</strong> — never accidentally expose password hashes or internal IDs</li>
+        <li><strong>Validation</strong> — input rules live in the DTO</li>
+        <li><strong>Versioning</strong> — change the entity without breaking the API contract</li>
+        <li><strong>Smaller payloads</strong> — only send what the client needs</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q26 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q26</span>
+      <span class="q-text">Model vs Entity vs DTO — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Term</th><th>Purpose</th></tr>
+        <tr><td><strong>Entity</strong></td><td>Maps directly to a database table (EF Core uses these)</td></tr>
+        <tr><td><strong>DTO</strong></td><td>Shapes data for the API — what you send/receive over HTTP</td></tr>
+        <tr><td><strong>Model</strong></td><td>Broad term — sometimes used interchangeably with either</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q27 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q27</span>
+      <span class="q-text">What is Model Binding?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>ASP.NET Core automatically reads the HTTP request (route, query string, body, headers) and maps the data to your action method's C# parameters or objects — no manual parsing needed.</p></div>
+      <pre>[<span class="ty">HttpGet</span>(<span class="str">"{id}"</span>)]
+<span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">Get</span>(<span class="kw">int</span> id) { ... } <span class="cm">// id bound from route</span>
+
+[<span class="ty">HttpPost</span>]
+<span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">Create</span>([<span class="ty">FromBody</span>] <span class="ty">CreateDto</span> dto) { ... } <span class="cm">// from JSON body</span></pre>
+    </div>
+  </div>
+
+  <!-- Q28 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q28</span>
+      <span class="q-text">What is Routing?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Routing maps an incoming HTTP URL + method to a specific controller action. In Web APIs, <strong>attribute routing</strong> is preferred — you declare the route directly on the controller.</p></div>
+      <pre>[<span class="ty">Route</span>(<span class="str">"api/[controller]"</span>)]
+[<span class="ty">HttpGet</span>(<span class="str">"{id:int}"</span>)]  <span class="cm">// → GET /api/products/5</span>
+<span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">GetById</span>(<span class="kw">int</span> id) { ... }</pre>
+    </div>
+  </div>
+
+  <!-- Q29 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q29</span>
+      <span class="q-text">Attribute Routing vs Conventional Routing?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>Attribute routing</strong> declares routes directly on actions with <code>[Route]</code>, <code>[HttpGet]</code> etc. — precise, readable, preferred for APIs.<br><strong>Conventional routing</strong> uses a global template (e.g. <code>{controller}/{action}/{id}</code>) — common in MVC with views.</p></div>
+    </div>
+  </div>
+
+  <!-- Q30 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q30</span>
+      <span class="q-text">What are Filters in ASP.NET Core?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Filters run code at specific points in the action pipeline — before or after an action executes. More targeted than middleware (they run only for controller actions).</p></div>
+      <ul class="ans-list">
+        <li><strong>Authorization filters</strong> — run first, can block the request</li>
+        <li><strong>Action filters</strong> — run before/after action method</li>
+        <li><strong>Exception filters</strong> — handle unhandled exceptions from actions</li>
+        <li><strong>Result filters</strong> — run before/after the response is written</li>
+        <li><strong>Resource filters</strong> — run after auth, can short-circuit (caching)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Module 7 -->
+  <div class="module-header">Module 7 — Entity Framework Core</div>
+
+  <!-- Q31 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q31</span>
+      <span class="q-text">What is DbContext?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>The primary class in EF Core. It represents a session with the database — manages connections, tracks changes to entities, and wraps <code>SaveChangesAsync()</code> to persist all changes at once.</p></div>
+    </div>
+  </div>
+
+  <!-- Q32 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q32</span>
+      <span class="q-text">What is DbSet?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>A property on DbContext that represents a single database table. You query and modify data through it.</p></div>
+      <pre><span class="kw">public class</span> <span class="ty">AppDbContext</span> : <span class="ty">DbContext</span>
+{
+    <span class="kw">public</span> <span class="ty">DbSet</span>&lt;<span class="ty">Product</span>&gt; <span class="prop">Products</span> =&gt; <span class="fn">Set</span>&lt;<span class="ty">Product</span>&gt;();
+}</pre>
+    </div>
+  </div>
+
+  <!-- Q33 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q33</span>
+      <span class="q-text">What is Code First in EF Core?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>You write C# entity classes first, then EF Core generates the database schema from them (via migrations). Opposed to Database First where you reverse-engineer C# from an existing database.</p></div>
+    </div>
+  </div>
+
+  <!-- Q34 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q34</span>
+      <span class="q-text">What are Migrations?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Versioned snapshots of schema changes. Each migration has an Up() (apply) and Down() (rollback). They let you evolve the database without losing data.</p></div>
+      <pre><span class="cm"># CLI commands</span>
+dotnet ef migrations add AddProductTable
+dotnet ef database update</pre>
+    </div>
+  </div>
+
+  <!-- Q35 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q35</span>
+      <span class="q-text">Tracking vs No Tracking — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>Tracking (default)</strong>: EF Core watches entities for changes — needed for Update/Delete. <strong>No tracking</strong>: skips change detection — faster for read-only queries.</p></div>
+      <pre><span class="cm">// Read-only — faster, less memory</span>
+<span class="kw">var</span> products = <span class="kw">await</span> _db.<span class="prop">Products</span>.<span class="fn">AsNoTracking</span>().<span class="fn">ToListAsync</span>();</pre>
+    </div>
+  </div>
+
+  <!-- Q36 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q36</span>
+      <span class="q-text">Lazy Loading vs Eager Loading?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Lazy Loading</th><th>Eager Loading</th></tr>
+        <tr><td>Related data loaded on first access</td><td>Related data loaded with the main query</td></tr>
+        <tr><td>Can cause N+1 query problem</td><td>One SQL query with JOIN</td></tr>
+        <tr><td>Requires virtual navigation properties</td><td>Uses <code>.Include()</code></td></tr>
+      </table>
+      <pre><span class="cm">// Eager loading — preferred</span>
+<span class="kw">var</span> orders = <span class="kw">await</span> _db.<span class="prop">Orders</span>.<span class="fn">Include</span>(o =&gt; o.Items).<span class="fn">ToListAsync</span>();</pre>
+    </div>
+  </div>
+
+  <!-- Q37 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q37</span>
+      <span class="q-text">Why do we use the Repository Pattern?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Abstracts data access behind an interface so business logic never touches EF Core directly. Benefits: easy to unit test (swap real DB for in-memory mock), single place to change if you switch databases.</p></div>
+    </div>
+  </div>
+
+  <!-- Q38 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q38</span>
+      <span class="q-text">What does SaveChanges() do?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Generates and executes the SQL (INSERT / UPDATE / DELETE) for all tracked changes since the last SaveChanges call. Call it once at the end — it wraps everything in a single transaction.</p></div>
+    </div>
+  </div>
+
+  <!-- Q39 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q39</span>
+      <span class="q-text">LINQ vs raw SQL — when would you use each?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Use <strong>LINQ</strong> for standard CRUD — compile-time checked, refactoring-friendly. Use <strong>raw SQL</strong> (via <code>FromSqlRaw</code>) for complex queries, stored procedures, or when LINQ generates inefficient SQL.</p></div>
+    </div>
+  </div>
+
+  <!-- Q40 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q40</span>
+      <span class="q-text">Explain LINQ — what is it and name common methods.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>LINQ (Language Integrated Query)</strong> lets you query collections and databases using C# syntax. It's deferred — the query doesn't run until you call <code>ToList()</code> or iterate.</p></div>
+      <pre><span class="kw">var</span> result = products
+    .<span class="fn">Where</span>(p =&gt; p.Price &gt; <span class="num">100</span>)
+    .<span class="fn">OrderBy</span>(p =&gt; p.Name)
+    .<span class="fn">Select</span>(p =&gt; <span class="kw">new</span> { p.Name, p.Price })
+    .<span class="fn">ToList</span>();
+
+products.<span class="fn">GroupBy</span>(p =&gt; p.Category);
+products.<span class="fn">FirstOrDefault</span>(p =&gt; p.Id == <span class="num">5</span>);
+products.<span class="fn">Any</span>(p =&gt; p.Stock == <span class="num">0</span>);</pre>
+    </div>
+  </div>
+
+  <!-- ════════════════ DAY 3 ════════════════ -->
+  <div class="day-header">
+    <span class="day-pill" style="background:rgba(251,191,36,0.1);color:var(--yellow);border:1px solid rgba(251,191,36,0.3)">Day 3</span>
+    <div class="day-line"></div>
+    <div class="day-title">SQL + APIs + Behavioral</div>
+  </div>
+
+  <!-- Module 8 -->
+  <div class="module-header">Module 8 — SQL</div>
+
+  <!-- Q41 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q41</span>
+      <span class="q-text">What does INNER JOIN return?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Only rows that have a match in <strong>both</strong> tables. Rows with no match on either side are excluded.</p></div>
+      <pre><span class="kw">SELECT</span> o.Id, c.Name
+<span class="kw">FROM</span>   Orders o
+<span class="kw">INNER JOIN</span> Customers c <span class="kw">ON</span> o.CustomerId = c.Id</pre>
+    </div>
+  </div>
+
+  <!-- Q42 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q42</span>
+      <span class="q-text">What does LEFT JOIN return?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>All rows from the <strong>left table</strong>, plus matched rows from the right. If no match, right-side columns are NULL. Use this to find "customers who have no orders".</p></div>
+      <pre><span class="kw">SELECT</span> c.Name, o.Total
+<span class="kw">FROM</span>   Customers c
+<span class="kw">LEFT JOIN</span> Orders o <span class="kw">ON</span> c.Id = o.CustomerId
+<span class="cm">-- customers with no orders appear with NULL Total</span></pre>
+    </div>
+  </div>
+
+  <!-- Q43 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q43</span>
+      <span class="q-text">Primary Key vs Foreign Key?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Primary Key</th><th>Foreign Key</th></tr>
+        <tr><td>Uniquely identifies a row in its own table</td><td>References the PK of another table</td></tr>
+        <tr><td>Cannot be NULL</td><td>Can be NULL (optional relationship)</td></tr>
+        <tr><td>One per table</td><td>A table can have many FKs</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q44 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q44</span>
+      <span class="q-text">GROUP BY vs ORDER BY?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>GROUP BY</strong> collapses multiple rows into groups so you can apply aggregate functions (SUM, COUNT, AVG). <strong>ORDER BY</strong> sorts the result rows — it doesn't group anything.</p></div>
+      <pre><span class="kw">SELECT</span> Category, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> Total
+<span class="kw">FROM</span>   Products
+<span class="kw">GROUP BY</span> Category
+<span class="kw">ORDER BY</span> Total <span class="kw">DESC</span></pre>
+    </div>
+  </div>
+
+  <!-- Q45 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q45</span>
+      <span class="q-text">HAVING vs WHERE — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>WHERE</strong> filters rows <em>before</em> grouping. <strong>HAVING</strong> filters <em>after</em> grouping — used with aggregate functions like SUM, COUNT.</p></div>
+      <pre><span class="kw">SELECT</span> CustomerId, <span class="fn">SUM</span>(Total) <span class="kw">AS</span> Spent
+<span class="kw">FROM</span>   Orders
+<span class="kw">WHERE</span>  Status = <span class="str">'Completed'</span>        <span class="cm">-- filter rows first</span>
+<span class="kw">GROUP BY</span> CustomerId
+<span class="kw">HAVING</span> <span class="fn">SUM</span>(Total) &gt; <span class="num">1000</span>          <span class="cm">-- filter groups after</span></pre>
+    </div>
+  </div>
+
+  <!-- Q46 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q46</span>
+      <span class="q-text">DELETE vs TRUNCATE vs DROP?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Command</th><th>What it does</th><th>Can rollback?</th></tr>
+        <tr><td><code>DELETE</code></td><td>Removes specific rows (WHERE clause)</td><td>Yes (transactional)</td></tr>
+        <tr><td><code>TRUNCATE</code></td><td>Removes all rows fast, resets identity</td><td>Depends on DB</td></tr>
+        <tr><td><code>DROP</code></td><td>Deletes the entire table and its structure</td><td>No</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Module 9 -->
+  <div class="module-header">Module 9 — REST API</div>
+
+  <!-- Q47 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q47</span>
+      <span class="q-text">GET vs POST — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>GET</th><th>POST</th></tr>
+        <tr><td>Retrieve data (read-only)</td><td>Create a new resource</td></tr>
+        <tr><td>Idempotent — same result every time</td><td>Not idempotent — creates new each time</td></tr>
+        <tr><td>Params in URL/query string</td><td>Data in the request body (JSON)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q48 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q48</span>
+      <span class="q-text">PUT vs PATCH?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>PUT</th><th>PATCH</th></tr>
+        <tr><td>Replace the <strong>entire</strong> resource</td><td>Update only <strong>specific fields</strong></td></tr>
+        <tr><td>Must send all fields</td><td>Send only changed fields</td></tr>
+      </table>
+      <div class="answer-text" style="margin-top:10px;font-size:13.5px;color:var(--muted)">Example: updating just a user's email → use PATCH. Replacing an entire product record → use PUT.</div>
+    </div>
+  </div>
+
+  <!-- Q49 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q49</span>
+      <span class="q-text">Common HTTP Status Codes — explain each one.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Code</th><th>Name</th><th>When to use</th></tr>
+        <tr><td style="color:var(--green)"><strong>200</strong></td><td>OK</td><td>Successful GET or PUT</td></tr>
+        <tr><td style="color:var(--green)"><strong>201</strong></td><td>Created</td><td>Resource created (POST)</td></tr>
+        <tr><td style="color:var(--green)"><strong>204</strong></td><td>No Content</td><td>Success but no body (DELETE, PUT)</td></tr>
+        <tr><td style="color:var(--yellow)"><strong>400</strong></td><td>Bad Request</td><td>Validation failed, malformed request</td></tr>
+        <tr><td style="color:var(--yellow)"><strong>401</strong></td><td>Unauthorized</td><td>Not authenticated (no/invalid token)</td></tr>
+        <tr><td style="color:var(--yellow)"><strong>403</strong></td><td>Forbidden</td><td>Authenticated but lacks permission</td></tr>
+        <tr><td style="color:var(--yellow)"><strong>404</strong></td><td>Not Found</td><td>Resource doesn't exist</td></tr>
+        <tr><td style="color:var(--red)"><strong>500</strong></td><td>Internal Server Error</td><td>Unhandled exception on the server</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q50 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q50</span>
+      <span class="q-text">Authentication vs Authorization?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>Authentication</strong> = proving who you are (login, JWT token).<br><strong>Authorization</strong> = what you're allowed to do (admin vs. user role).<br>Authentication must happen before authorization.</p></div>
+    </div>
+  </div>
+
+  <!-- Q51 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q51</span>
+      <span class="q-text">What is JWT?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p><strong>JSON Web Token</strong> — a compact, signed token used for stateless authentication. The server signs it with a secret key; the client sends it on every request in the Authorization header. The server verifies the signature — no DB lookup needed.</p></div>
+      <pre>Header.Payload.Signature
+<span class="cm">// Sent as: Authorization: Bearer &lt;token&gt;</span></pre>
+      <div class="answer-text" style="margin-top:10px;font-size:13.5px;color:var(--muted)">The payload is <strong style="color:var(--text)">Base64 encoded, not encrypted</strong> — never store passwords or secrets in it.</div>
+    </div>
+  </div>
+
+  <!-- Q52 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q52</span>
+      <span class="q-text">What are Claims?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Key-value pairs stored inside the JWT payload that describe the user. The server reads them to make authorization decisions without a DB call.</p></div>
+      <div class="keywords">
+        <span class="kw-tag">UserId</span>
+        <span class="kw-tag">Email</span>
+        <span class="kw-tag">Role</span>
+        <span class="kw-tag">Expiry</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q53 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q53</span>
+      <span class="q-text">What is CORS?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Browsers block requests from a different origin (domain / port) by default. <strong>CORS (Cross-Origin Resource Sharing)</strong> lets your server explicitly allow certain origins. You'll need this the moment your React frontend talks to your .NET API.</p></div>
+      <pre>builder.Services.<span class="fn">AddCors</span>(o =&gt; o.<span class="fn">AddPolicy</span>(<span class="str">"AllowFrontend"</span>, p =&gt;
+    p.<span class="fn">WithOrigins</span>(<span class="str">"http://localhost:3000"</span>).<span class="fn">AllowAnyMethod</span>().<span class="fn">AllowAnyHeader</span>()));</pre>
+    </div>
+  </div>
+
+  <!-- Q54 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q54</span>
+      <span class="q-text">What is Swagger?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Auto-generates interactive API documentation from your controllers and DTOs. You can test every endpoint directly in the browser at <code>/swagger</code>. Included by default in <code>dotnet new webapi</code>.</p></div>
+    </div>
+  </div>
+
+  <!-- Module 10 -->
+  <div class="module-header">Module 10 — Async Programming</div>
+
+  <!-- Q55 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q55</span>
+      <span class="q-text">Explain async/await — why do we use it?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <div class="answer-text"><p>Makes I/O-bound operations (DB, HTTP, file) non-blocking. The thread is freed while waiting — so a single server can handle thousands of concurrent requests instead of one per thread.</p></div>
+      <pre><span class="cm">// ✅ Thread freed while DB query runs</span>
+<span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">Product</span>?&gt; <span class="fn">GetAsync</span>(<span class="kw">int</span> id)
+    =&gt; <span class="kw">await</span> _db.<span class="prop">Products</span>.<span class="fn">FindAsync</span>(id);
+
+<span class="cm">// ❌ Blocks the thread — can deadlock</span>
+<span class="kw">var</span> product = <span class="fn">GetAsync</span>(id).<span class="prop">Result</span>;</pre>
+    </div>
+  </div>
+
+  <!-- Q56 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q56</span>
+      <span class="q-text">Task vs Thread — what's the difference?</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <table class="tbl">
+        <tr><th>Task</th><th>Thread</th></tr>
+        <tr><td>High-level abstraction (TPL)</td><td>OS-level resource</td></tr>
+        <tr><td>Managed by the thread pool</td><td>Dedicated OS thread</td></tr>
+        <tr><td>Lightweight, thousands can run</td><td>Heavy (~1MB stack each)</td></tr>
+        <tr><td>Use for async/await operations</td><td>Use for true CPU-bound parallelism</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Module 11 -->
+  <div class="module-header">Module 11 — Design &amp; Architecture</div>
+
+  <!-- Q57 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q57</span>
+      <span class="q-text">Explain SOLID principles.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <ul class="ans-list">
+        <li><strong>S — Single Responsibility</strong>: a class should have only one reason to change</li>
+        <li><strong>O — Open/Closed</strong>: open for extension, closed for modification (add features without touching existing code)</li>
+        <li><strong>L — Liskov Substitution</strong>: a subclass must be usable wherever its base class is used</li>
+        <li><strong>I — Interface Segregation</strong>: don't force a class to implement methods it doesn't use</li>
+        <li><strong>D — Dependency Inversion</strong>: depend on abstractions (interfaces), not concrete classes</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q58 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q58</span>
+      <span class="q-text">Explain MVC — Model, View, Controller.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Answer</div>
+      <ul class="ans-list">
+        <li><strong>Model</strong> — holds data and business rules</li>
+        <li><strong>View</strong> — the UI template (Razor pages) — in Web APIs you return JSON instead</li>
+        <li><strong>Controller</strong> — receives requests, calls the service/model, returns a response</li>
+      </ul>
+      <div class="answer-text" style="margin-top:12px;font-size:13.5px;color:var(--muted)">In ASP.NET Core Web APIs you mainly work with Controllers and DTOs/Models — View is replaced by JSON output.</div>
+    </div>
+  </div>
+
+  <!-- Module 12 -->
+  <div class="module-header">Module 12 — Behavioral</div>
+
+  <!-- Q59 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q59</span>
+      <span class="q-text">Tell me about yourself.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Structure (about 1 minute)</div>
+      <ul class="ans-list">
+        <li><strong>Background</strong> — degree / bootcamp in Computer Science or Software Engineering</li>
+        <li><strong>Experience</strong> — your .NET and backend experience, what you've built</li>
+        <li><strong>Projects</strong> — mention 2–3 (e.g. Filmore, BoneX, ShipmentTracker) with one-line descriptions</li>
+        <li><strong>Goal</strong> — what you're looking for in this role and why this company</li>
+      </ul>
+      <div class="answer-text" style="margin-top:10px;font-size:13.5px;color:var(--muted)">Keep it focused on your technical journey. Practice saying it out loud — it should feel natural, not recited.</div>
+    </div>
+  </div>
+
+  <!-- Q60 -->
+  <div class="qcard" onclick="toggle(this)">
+    <div class="qcard-header">
+      <span class="q-num">Q60</span>
+      <span class="q-text">Tell me about a challenging project.</span>
+      <span class="q-chevron">⌄</span>
+    </div>
+    <div class="qcard-body">
+      <div class="answer-label">Use the STAR format</div>
+      <ul class="ans-list">
+        <li><strong>Situation</strong> — what was the project and what was the specific challenge?</li>
+        <li><strong>Task</strong> — what was your responsibility in solving it?</li>
+        <li><strong>Action</strong> — what technical steps did you take? (be specific — JWT, EF migrations, REST design, etc.)</li>
+        <li><strong>Result</strong> — what was the outcome and what did you learn?</li>
+      </ul>
+      <div class="answer-text" style="margin-top:10px;font-size:13.5px;color:var(--muted)">Good candidates for this: implementing JWT auth from scratch, designing a relational schema, fixing a performance issue with AsNoTracking or indexing, or integrating a third-party API.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ CHECKLIST ════════════════ -->
+  <div class="checklist-section">
+    <div class="checklist-title">Final 1-Hour Revision Checklist</div>
+    <div class="checklist-sub">Go through each item before your interview. If you can explain it out loud in plain English with an example, you're ready. If it feels shaky, revisit that question card above.</div>
+
+    <div class="checklist-grid">
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">CLR, CTS, CLS, IL, JIT</div>
+          <div class="check-desc">Explain what happens from writing code to CPU execution. Know CLR's responsibilities.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Value vs Reference Types</div>
+          <div class="check-desc">Stack vs heap, copy-on-assignment vs shared pointer. Be ready for the int/class example.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">OOP Principles</div>
+          <div class="check-desc">Define all four (Encapsulation, Inheritance, Polymorphism, Abstraction) with a code example each.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Interface vs Abstract Class</div>
+          <div class="check-desc">Multiple inheritance, fields, constructors — and the "is-a vs can-do" mental model.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Delegates, Action, Func, Events</div>
+          <div class="check-desc">Know that delegates are type-safe function pointers. Be able to write a simple lambda for each.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Collections</div>
+          <div class="check-desc">List, Dictionary, HashSet, Queue, Stack — when to use each and the complexity of key operations.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Exception Handling</div>
+          <div class="check-desc">try/catch/finally, throw vs throw ex, and how to write a custom exception class.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">LINQ</div>
+          <div class="check-desc">Where, Select, OrderBy, GroupBy, FirstOrDefault, Any, Join. Know it's deferred execution.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">async / await and Task</div>
+          <div class="check-desc">Why it's non-blocking, when to use Task.WhenAll, and why .Result can deadlock.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Dependency Injection</div>
+          <div class="check-desc">Transient / Scoped / Singleton — know when each is used and the captive dependency problem.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">ASP.NET Core Request Pipeline</div>
+          <div class="check-desc">The middleware chain in order. Know that order in Program.cs matters.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Middleware</div>
+          <div class="check-desc">What it is, how to write a custom one with InvokeAsync and RequestDelegate.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Controllers, Routing, Model Binding</div>
+          <div class="check-desc">Attribute routing, [FromBody] / [FromRoute], [ApiController] automating 400 responses.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">DTOs and Validation</div>
+          <div class="check-desc">Why we use DTOs, Data Annotations ([Required], [EmailAddress], [Range]), and FluentValidation basics.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Entity Framework Core</div>
+          <div class="check-desc">DbContext, DbSet, migrations, CRUD, Include (eager loading), AsNoTracking, SaveChangesAsync.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">SQL — JOINs, GROUP BY, HAVING</div>
+          <div class="check-desc">Write a LEFT JOIN query. Explain the difference between WHERE and HAVING with an example.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">HTTP Methods and Status Codes</div>
+          <div class="check-desc">GET/POST/PUT/PATCH/DELETE. Know 200/201/204/400/401/403/404/500 and when each is returned.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">REST API Principles</div>
+          <div class="check-desc">Stateless, resource-based URLs, correct HTTP verbs, consistent status codes.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">JWT Authentication &amp; Authorization</div>
+          <div class="check-desc">Header.Payload.Signature structure, Claims, [Authorize], 401 vs 403 distinction.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">SOLID Principles</div>
+          <div class="check-desc">Be able to name all five and give a one-sentence plain English explanation for each.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Repository Pattern</div>
+          <div class="check-desc">Why it separates concerns, what the interface looks like, and how it helps with unit testing.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Git Basics</div>
+          <div class="check-desc">clone, add, commit, push, pull, branch, merge. Explain merge vs rebase if asked.</div>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div>
+          <div class="check-label">Your Projects</div>
+          <div class="check-desc">For each project: what problem it solves, the tech stack used, your specific contribution, and one challenge you faced.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggle(card) {
+    card.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
